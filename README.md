@@ -26,9 +26,8 @@ https://docs.gradle.org/current/userguide/installation.html.
 
 ### Building and running the project
 
-**EXPLAIN THIS HERE**
-
-`./gradlew run`
+I have provided the gradle wrapper for this project. To run it from the command
+line type `./gradlew run`.
 
 ## Closing thoughts
 
