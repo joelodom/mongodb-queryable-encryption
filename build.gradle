@@ -15,3 +15,7 @@ dependencies {
 application {
     mainClass = 'com.joelodom.QEDemonstration'
 }
+
+run {
+    standardInput = System.in
+}
