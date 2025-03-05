@@ -5,7 +5,7 @@ A demonstration and sandbox for MongoDB Queryable Encryption.
 
 ### Installing MongoDB
 
-For this to work, we'll need MongoDB 8.0 or later. I'm going to use my Atlas
+For this to work, you'll need MongoDB 8.0 or later. I'm going to use my Atlas
 instance, but you could also point to a local instance.
 See https://www.mongodb.com/docs/manual/installation/ and
 https://www.mongodb.com/docs/atlas/getting-started/ (I like using the
@@ -24,10 +24,10 @@ You'll need to install a JDK, which I won't explain in detail here.
 I use gradle as my build system. If you're new to gradle (as I am), see
 https://docs.gradle.org/current/userguide/installation.html.
 
-### Building and running the project
+## Building and running the project
 
 I have provided the gradle wrapper for this project. To run it from the command
-line type `./gradlew run`.
+line type `./gradlew run`. I configured a build task in VS Code as a shortcut.
 
 ## Closing thoughts
 

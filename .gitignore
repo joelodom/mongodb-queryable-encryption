@@ -26,3 +26,5 @@ replay_pid*
 # Joel's additions
 .env
 .gradle/
+.vscode/
+build/
