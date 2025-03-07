@@ -5,6 +5,7 @@ import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.CreateEncryptedCollectionParams;
@@ -23,9 +24,6 @@ public class DatabaseManagement {
         return getEncryptedClient().getDatabase(Env.DATABASE_NAME);
     }
 
-    /**
-     * 
-     */
     public static void createEncryptedCollection() {
 
         /**
@@ -71,11 +69,9 @@ public class DatabaseManagement {
             System.out.println();
             return;
         }
-            
-        // getDatabase().createCollection(Env.COLLECTION_NAME);
-        // System.out.println("Created collection " + Env.COLLECTION_NAME
-        //     + " in database " + getDatabase().getName());
-        // System.out.println();
+
+        System.out.println("Created encrypted collection " + Env.COLLECTION_NAME);
+        System.out.println();
     }
 
     /**
@@ -85,7 +81,11 @@ public class DatabaseManagement {
      */
     public static void destroyDatabase() {
         ENCRYPTED_MONGO_CLIENT.getDatabase(Env.DATABASE_NAME).drop();
-        System.out.println("Destryoed database " + getDatabase().getName());
+        System.out.println("Destroyed database " + getDatabase().getName());
         System.out.println();
+    }
+
+    public static MongoCollection getEncryptedCollection() {
+        return getDatabase().getCollection(Env.COLLECTION_NAME);
     }
 }

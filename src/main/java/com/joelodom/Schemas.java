@@ -21,13 +21,9 @@ public class Schemas {
             new BsonArray(Arrays.asList(
                 new BsonDocument()
                         .append("keyId", new BsonNull())
-                        .append("path", new BsonString("patientRecord.ssn"))
+                        .append("path", new BsonString("ssn"))
                         .append("bsonType", new BsonString("string"))
                         .append("queries", new BsonDocument()
-                                .append("queryType", new BsonString("equality"))),
-                new BsonDocument()
-                        .append("keyId", new BsonNull())
-                        .append("path", new BsonString("patientRecord.billing"))
-                        .append("bsonType", new BsonString("object")))));
+                                .append("queryType", new BsonString("equality"))))));
     }
 }

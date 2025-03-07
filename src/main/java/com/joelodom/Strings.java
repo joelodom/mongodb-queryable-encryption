@@ -15,5 +15,6 @@ see the README.md file.
   status              Show the status of pretty much everything.
   create-collection   Creates the test database.
   destroy-database    Destroys the test database.
+  add-member          Insert one random member record.
 """;
 }

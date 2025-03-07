@@ -2,6 +2,8 @@ package com.joelodom;
 
 import java.util.Scanner;
 
+import org.bson.json.JsonWriterSettings;
+
 /**
  * See the README.md for documentation about the overall demonstration.
  */
@@ -35,6 +37,7 @@ public class QEDemonstration {
             case "status" -> printStatus();
             case "create-collection" -> DatabaseManagement.createEncryptedCollection();
             case "destroy-database" -> DatabaseManagement.destroyDatabase();
+            case "add-member" -> Members.addRandomMember();
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
                 System.out.println();
@@ -48,13 +51,22 @@ public class QEDemonstration {
     }
 
     private static void printStatus() {
+        JsonWriterSettings jsonWriterSettings = JsonWriterSettings.builder()
+            .indent(true)
+            .build();
+            
         System.out.println("Status:");
         System.out.println();
+
         System.out.println("MONGODB_URI: " + Env.MONGODB_URI);
         System.out.println("SHARED_LIB_PATH: " + Env.SHARED_LIB_PATH);
         System.out.println("DATABASE_NAME: " + Env.DATABASE_NAME);
         System.out.println("COLLECTION_NAME: " + Env.COLLECTION_NAME);
         System.out.println("KEY_VAULT_NAMESPACE: " + Env.KEY_VAULT_NAMESPACE);
+        System.out.println();
+
+        System.out.println("Encrypted fields map:");
+        System.out.println(Schemas.ENCRYPTED_FIELDS_MAP.toJson(jsonWriterSettings));
         System.out.println();
     }
 }
