@@ -17,7 +17,8 @@ public class KeyManagement {
 
     // The local key could also be a 96-byte array. Of course, this would
     // normally not be hardcoded.
-    private static final String DEMO_KEY = "QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB";
+    private static final String DEMO_KEY
+        = java.util.Base64.getEncoder().encodeToString("012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345".getBytes());
 
     /**
      * The KMS provider credentials is a data structure that explains to

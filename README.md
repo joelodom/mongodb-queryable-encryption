@@ -11,6 +11,14 @@ See https://www.mongodb.com/docs/manual/installation/ and
 https://www.mongodb.com/docs/atlas/getting-started/ (I like using the
 Atlas UI).
 
+#### MongoDB drivers
+
+You can find the MongoDB driver installation information at
+https://www.mongodb.com/docs/drivers/java/sync/current/quick-start/. For QE,
+you'll also need the encryption dependendency. See
+https://www.mongodb.com/docs/drivers/java/sync/current/fundamentals/encrypt-fields/.
+I have added both of these to the included gradle file.
+
 ### Configuring your environment
 
 See env_template in the root directory of this project and copy it to

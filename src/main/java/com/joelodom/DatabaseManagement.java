@@ -44,7 +44,6 @@ public class DatabaseManagement {
 
         ClientEncryption clientEncryption
             = ClientEncryptions.create(clientEncryptionSettings);
-
         /**
          * A QE-enabled collection should have a server-side schema to enforce
          * rejection of non-encrypted payloads that should be encrypted.
