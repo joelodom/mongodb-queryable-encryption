@@ -31,19 +31,14 @@ public class QEDemonstration {
 
     private static void evaluate(String input) {
         if (null != input) switch (input) {
-            case "help":
-                printHelp();
-                break;
-            case "status":
-                printStatus();
-                break;
-            case "create-database":
-                DatabaseManagement.createDatabase();
-                break;
-            default:
+            case "help" -> printHelp();
+            case "status" -> printStatus();
+            case "create-database" -> DatabaseManagement.createDatabase();
+            case "destroy-database" -> DatabaseManagement.destroyDatabase();
+            default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
                 System.out.println();
-                break;
+            }
         }
     }
 

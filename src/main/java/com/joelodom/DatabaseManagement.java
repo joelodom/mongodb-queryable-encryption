@@ -5,20 +5,31 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
 public class DatabaseManagement {
+    private static final MongoClient ENCRYPTED_MONGO_CLIENT = MongoClients.create(Env.MONGODB_URI);
+    
+    public static MongoClient getEncryptedClient() {
+        return ENCRYPTED_MONGO_CLIENT;
+    }
 
-    /**
-     * 
-     */
-    public static void createDatabase() {
-        MongoClient encryptedClient = MongoClients.create(Env.MONGODB_URI);
-        MongoDatabase database = encryptedClient.getDatabase(Env.DATABASE_NAME);
-        database.createCollection(Env.COLLECTION_NAME);
+    public static MongoDatabase getDatabase() {
+        return getEncryptedClient().getDatabase(Env.DATABASE_NAME);
     }
 
     /**
      * 
      */
-    public static void destroyDatabases() {
+    public static void createDatabase() {
+        getDatabase().createCollection(Env.COLLECTION_NAME);
+        System.out.println("Created database " + getDatabase().getName());
+        System.out.println();
+    }
 
+    /**
+     * 
+     */
+    public static void destroyDatabase() {
+        ENCRYPTED_MONGO_CLIENT.getDatabase(Env.DATABASE_NAME).drop();
+        System.out.println("Destryoed database " + getDatabase().getName());
+        System.out.println();
     }
 }
