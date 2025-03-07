@@ -8,11 +8,12 @@ import com.mongodb.client.result.InsertOneResult;
 public class Members {
     public static void addRandomMember() {
         // TODO: Document this and error out if the database doesn't already exist!
-        
+
         MongoCollection collection = DatabaseManagement.getEncryptedCollection();
 
         Document document = new Document("name",
-            RandomData.generateRandomFullName());
+            RandomData.generateRandomFullName())
+            .append("ssn", RandomData.generateRandomSSN());
 
         InsertOneResult result = collection.insertOne(document);
         if (result.wasAcknowledged()) {

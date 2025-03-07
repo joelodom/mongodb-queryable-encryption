@@ -40,4 +40,12 @@ public class RandomData {
     public static String generateRandomFullName() {
         return generateRandomName() + " " + generateRandomName();
     }
+
+    public static String generateRandomSSN() {
+        int area = ThreadLocalRandom.current().nextInt(100, 1000);
+        int group = ThreadLocalRandom.current().nextInt(10, 100);
+        int serial = ThreadLocalRandom.current().nextInt(1000, 10000);
+        
+        return String.format("%03d-%02d-%04d", area, group, serial);
+    }
 }

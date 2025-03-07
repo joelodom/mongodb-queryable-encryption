@@ -2,6 +2,7 @@ package com.joelodom;
 
 import java.util.Scanner;
 
+import org.bson.Document;
 import org.bson.json.JsonWriterSettings;
 
 /**
@@ -68,5 +69,11 @@ public class QEDemonstration {
         System.out.println("Encrypted fields map:");
         System.out.println(Schemas.ENCRYPTED_FIELDS_MAP.toJson(jsonWriterSettings));
         System.out.println();
+
+        System.out.println("Collection info:");
+        System.out.println();
+        for (Document c: DatabaseManagement.getDatabase().listCollections()) {
+            System.out.println(c.toJson(jsonWriterSettings));
+        }
     }
 }
