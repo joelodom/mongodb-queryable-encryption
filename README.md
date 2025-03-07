@@ -11,13 +11,24 @@ See https://www.mongodb.com/docs/manual/installation/ and
 https://www.mongodb.com/docs/atlas/getting-started/ (I like using the
 Atlas UI).
 
-#### MongoDB drivers
+#### Installing the MongoDB Java drivers
 
 You can find the MongoDB driver installation information at
 https://www.mongodb.com/docs/drivers/java/sync/current/quick-start/. For QE,
 you'll also need the encryption dependendency. See
 https://www.mongodb.com/docs/drivers/java/sync/current/fundamentals/encrypt-fields/.
 I have added both of these to the included gradle file.
+
+#### Installing the MongoDB crypt_shared library
+
+To perform automatic encryption (not available in Community), you'll need the
+query analysis component, crypt_shared. See
+https://www.mongodb.com/docs/manual/core/queryable-encryption/install-library/.
+This component doesn't actually do any encryption, rather it does the query
+analysis required for automatic encryption.
+
+If you use this on MacOS and it's blocked by security policy, try
+`xattr -d com.apple.quarantine ./mongo_crypt_v1.dylib`.
 
 ### Configuring your environment
 

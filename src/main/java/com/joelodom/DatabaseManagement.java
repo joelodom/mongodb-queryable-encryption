@@ -1,5 +1,9 @@
 package com.joelodom;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.mongodb.AutoEncryptionSettings;
 import com.mongodb.ClientEncryptionSettings;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -13,9 +17,32 @@ import com.mongodb.client.vault.ClientEncryption;
 import com.mongodb.client.vault.ClientEncryptions;
 
 public class DatabaseManagement {
-    private static final MongoClient ENCRYPTED_MONGO_CLIENT
-        = MongoClients.create(Env.MONGODB_URI);
-    
+    private static final Map<String, Object> EXTRA_OPTIONS = new HashMap<>();
+    private static final AutoEncryptionSettings AUTO_ENCRYPTION_SETTINGS;
+    private static final MongoClientSettings CLIENT_SETTINGS;
+    private static final MongoClient ENCRYPTED_MONGO_CLIENT;
+
+    /**
+     * TODO: This deserves some commenting.
+     */
+
+    static {
+        EXTRA_OPTIONS.put("cryptSharedLibPath", Env.SHARED_LIB_PATH);
+
+        AUTO_ENCRYPTION_SETTINGS = AutoEncryptionSettings.builder()
+                .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
+                .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
+                .extraOptions(EXTRA_OPTIONS)
+                .build();
+
+        CLIENT_SETTINGS = MongoClientSettings.builder()
+            .applyConnectionString(new ConnectionString(Env.MONGODB_URI))
+            .autoEncryptionSettings(AUTO_ENCRYPTION_SETTINGS)
+            .build();
+
+        ENCRYPTED_MONGO_CLIENT = MongoClients.create(CLIENT_SETTINGS);
+    }
+
     public static MongoClient getEncryptedClient() {
         return ENCRYPTED_MONGO_CLIENT;
     }
