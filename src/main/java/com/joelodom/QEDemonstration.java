@@ -16,8 +16,7 @@ public class QEDemonstration {
                 if ("exit".equalsIgnoreCase(input)) {
                     break;
                 }
-                String result = evaluate(input);
-                print(result);
+                evaluate(input);
             }
         }
     }
@@ -27,12 +26,17 @@ public class QEDemonstration {
         return scanner.nextLine().trim();
     }
 
-    private static String evaluate(String input) {
-        return "You said: " + input;
+    private static void evaluate(String input) {
+        if ("help".equals(input)) {
+            printHelp();
+        }
+        else if ("status".equals(input)) {
+            printStatus();
+        }
     }
 
-    private static void print(String output) {
-        System.out.println(output);
+    private static void printHelp() {
+        System.out.println(Strings.HELP_MESSAGE);
         System.out.println();
     }
 
