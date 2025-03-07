@@ -1,4 +1,13 @@
-# MongoDB connection parameters
+#
+# These are teh MongoDB connection parameters. They must be changed.
+#
 
 MONGODB_URI="<Your MongoDB URI>"
 SHARED_LIB_PATH="<Full path to your Automatic Encryption Shared Library>"
+
+#
+# These are the default database and collection names. They may be changed.
+#
+
+DATABASE_NAME="javaQEDemoDatabase"
+COLLECTION_NAME="demoCollection"

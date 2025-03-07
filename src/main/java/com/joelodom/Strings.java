@@ -10,8 +10,9 @@ see the README.md file.
 
     public static final String HELP_MESSAGE =
 """
-  exit    Exit the application.
-  help    Show this help message.
-  status  Show the status of pretty much everything.
+  exit             Exit the application.
+  help             Show this help message.
+  status           Show the status of pretty much everything.
+  create-database  Creates the test database.
 """;
 }

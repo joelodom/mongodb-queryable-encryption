@@ -5,10 +5,20 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
 public class DatabaseManagement {
-    // public static void createDatabaseWithTestCollection() {
-    //     MongoClient mongoClient = MongoClients.create(Env.MONGODB_URI);
-    //     MongoDatabase database = mongoClient.getDatabase("testDatabase");
-    //     database.createCollection("testCollection");
-    //     System.out.println("Database and collection 'testCollection' created successfully.");
-    // }
+
+    /**
+     * 
+     */
+    public static void createDatabase() {
+        MongoClient encryptedClient = MongoClients.create(Env.MONGODB_URI);
+        MongoDatabase database = encryptedClient.getDatabase(Env.DATABASE_NAME);
+        database.createCollection(Env.COLLECTION_NAME);
+    }
+
+    /**
+     * 
+     */
+    public static void destroyDatabases() {
+
+    }
 }

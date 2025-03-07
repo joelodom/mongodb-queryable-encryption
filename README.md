@@ -31,6 +31,10 @@ line type `./gradlew --console plain run`.
 
 ## Closing thoughts
 
+This is not a production-ready application. I skimped on exception and error
+handling and things like that. I'm not a Java expert, so some of what I'm
+doing is at best non-idiomatic and at worst idiotic.
+
 The best place to go for help is https://www.mongodb.com/community/forums/.
 If you get too stuck, you can try to contact me at joel.odom@mongodb.com, but
 please understand that I'm unable to respond to every question and I tend

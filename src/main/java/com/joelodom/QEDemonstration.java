@@ -2,6 +2,9 @@ package com.joelodom;
 
 import java.util.Scanner;
 
+/**
+ * See the README.md for documentation about the overall demonstration.
+ */
 public class QEDemonstration {
     public static void main(String[] args) {
         // welcome messages
@@ -27,11 +30,20 @@ public class QEDemonstration {
     }
 
     private static void evaluate(String input) {
-        if ("help".equals(input)) {
-            printHelp();
-        }
-        else if ("status".equals(input)) {
-            printStatus();
+        if (null != input) switch (input) {
+            case "help":
+                printHelp();
+                break;
+            case "status":
+                printStatus();
+                break;
+            case "create-database":
+                DatabaseManagement.createDatabase();
+                break;
+            default:
+                System.out.println(input + " is not a recognized command. Try help.");
+                System.out.println();
+                break;
         }
     }
 
