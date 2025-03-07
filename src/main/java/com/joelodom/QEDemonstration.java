@@ -52,6 +52,9 @@ public class QEDemonstration {
         System.out.println();
         System.out.println("MONGODB_URI: " + Env.MONGODB_URI);
         System.out.println("SHARED_LIB_PATH: " + Env.SHARED_LIB_PATH);
+        System.out.println("DATABASE_NAME: " + Env.DATABASE_NAME);
+        System.out.println("COLLECTION_NAME: " + Env.COLLECTION_NAME);
+        System.out.println("KEY_VAULT_NAMESPACE: " + Env.KEY_VAULT_NAMESPACE);
         System.out.println();
     }
 }
