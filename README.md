@@ -27,7 +27,8 @@ https://docs.gradle.org/current/userguide/installation.html.
 ## Building and running the project
 
 I have provided the gradle wrapper for this project. To run it from the command
-line type `./gradlew --console plain run`.
+line type `./gradlew --console plain run`. I've also commited my .vscode folder
+for those using VS Code.
 
 ## Closing thoughts
 

@@ -33,7 +33,7 @@ public class QEDemonstration {
         if (null != input) switch (input) {
             case "help" -> printHelp();
             case "status" -> printStatus();
-            case "create-database" -> DatabaseManagement.createDatabase();
+            case "create-collection" -> DatabaseManagement.createEncryptedCollection();
             case "destroy-database" -> DatabaseManagement.destroyDatabase();
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");

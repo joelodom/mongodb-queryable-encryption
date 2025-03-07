@@ -11,3 +11,12 @@ SHARED_LIB_PATH="<Full path to your Automatic Encryption Shared Library>"
 
 DATABASE_NAME="javaQEDemoDatabase"
 COLLECTION_NAME="demoCollection"
+
+#
+# Queryable encryption stores your encrypted keys in a key vault.
+# The key vault namespace will be KEY_VAULT_DATABASE.KEY_VAULT_COLLECTION.
+# These parameters may be changed.
+#
+
+KEY_VAULT_DATABASE="demoKeyVault"
+KEY_VAULT_COLLECTION="__keyVault"
