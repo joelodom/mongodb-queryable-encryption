@@ -1,19 +1,22 @@
 package com.joelodom;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bson.Document;
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.result.InsertOneResult;
+import com.mongodb.client.result.InsertManyResult;
 
 public class Members {
 
     /**
-     * This function adds a single random member to the encrypted collection.
+     * This function adds random members to the encrypted collection.
      * 
      * TODO: Bulk inserts.
      */
 
-    public static void addRandomMember() {
+    public static void addRandomMembers(int number) {
         /**
          * First we create a document with one field, ssn, which is encrypted.
          * 
@@ -24,16 +27,22 @@ public class Members {
 
         MongoCollection collection = DatabaseManagement.getEncryptedCollection();
 
-        Document document = new Document("name",
-            RandomData.generateRandomFullName())
-            .append("ssn", RandomData.generateRandomSSN());
+        List<Document> documents = new ArrayList<>(number);
 
-        InsertOneResult result = collection.insertOne(document);
+        while (documents.size() < number) {
+            Document document = new Document("name",
+                RandomData.generateRandomFullName())
+                .append("ssn", RandomData.generateRandomSSN());
+            documents.add(document);
+        }
+
+        InsertManyResult result = collection.insertMany(documents);
+
         if (result.wasAcknowledged()) {
-            System.out.println("Successfully inserted the record.");
+            System.out.println("Successfully inserted " + number + " records.");
         }
         else {
-            System.out.println("Failed to insert the record.");
+            System.out.println("Failed to insert the records.");
         }
 
         System.out.println();

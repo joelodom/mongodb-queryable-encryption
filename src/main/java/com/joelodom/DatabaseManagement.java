@@ -39,6 +39,7 @@ public class DatabaseManagement {
         //     Env.DATABASE_NAME + "." + Env.COLLECTION_NAME,
         //     Schemas.ENCRYPTED_FIELDS_MAP
         // );
+        
         /**
          * Automatic encryption is a QE feature that allows you to insert into
          * the database and query the database without having to specify what to
@@ -55,6 +56,7 @@ public class DatabaseManagement {
          * applied to the MongoClientSettings so that your Mongo Client can
          * perform the automatic encryption during the session.
          */
+
         AUTO_ENCRYPTION_SETTINGS = AutoEncryptionSettings.builder()
                 .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
                 .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)

@@ -1,5 +1,7 @@
 package com.joelodom;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Scanner;
 
 import org.bson.Document;
@@ -26,9 +28,14 @@ public class QEDemonstration {
             Scanner scanner = new Scanner(System.in)) {
             while (true) {
                 String input = read(scanner);
+                
                 if ("exit".equalsIgnoreCase(input)) {
                     break;
                 }
+                else if ("".equals(input)) {
+                    continue;
+                }
+
                 evaluate(input);
             }
         }
@@ -40,17 +47,41 @@ public class QEDemonstration {
     }
 
     private static void evaluate(String input) {
-        if (null != input) switch (input) {
+        /**
+         * TODO: More robust error handling and allow using arrow keys and all.
+         * This is pretty rough code.
+         */
+
+        String[] args = input.split("\\s+");
+
+        String verb = args[0];
+        String noun = args.length > 1 ? args[1] : null;
+
+        Instant start = Instant.now();
+
+        switch (verb) {
             case "help" -> printHelp();
             case "status" -> printStatus();
             case "create-collection" -> DatabaseManagement.createEncryptedCollection();
             case "destroy-database" -> DatabaseManagement.destroyDatabase();
-            case "add-member" -> Members.addRandomMember();
+            case "add-members" -> {
+                if (noun == null) {
+                    System.out.println(
+                        "Please specify the number of members to add.");
+                    System.out.println();
+                } else {
+                    Members.addRandomMembers(Integer.parseInt(noun));
+                }
+            }
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
                 System.out.println();
             }
         }
+
+        System.out.println("Execution time: " + Duration.between(
+            start, Instant.now()).toMillis() + " ms");
+        System.out.println();
     }
 
     private static void printHelp() {
