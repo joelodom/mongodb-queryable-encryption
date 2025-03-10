@@ -58,12 +58,13 @@ for those using VS Code, so Command + Shift + B works for me on my Mac.
 First type `help`. This will show you these commands:
 
 ```
-  exit                Exit the application.
-  help                Show this help message.
-  status              Show the status of pretty much everything.
-  create-collection   Creates the test database.
-  destroy-database    Destroys the test database.
-  add-member          Insert one random member record.
+  exit                  Exit the application.
+  help                  Show this help message.
+  status                Show the status of pretty much everything.
+  create-collection     Creates the test database.
+  destroy-database      Destroys the test database.
+  add-members [number]  Insert [number] random member records.
+  find-one              Query for one member record (semi-randomly).
 ```
 
 Here is my demonstration flow:
