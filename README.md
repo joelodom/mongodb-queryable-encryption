@@ -65,7 +65,7 @@ First type `help`. This will show you these commands:
   destroy-database      Destroys the test database.
   add-members [number]  Insert [number] random member records.
   find-one              Query for one member record (semi-randomly).
-  demonstrate-query     Demonstrate an equality query on encrypted data.
+  equality-query     Demonstrate an equality query on encrypted data.
 ```
 
 Here is my demonstration flow:
@@ -87,7 +87,7 @@ ssn field is encrypted.
 4. Use `find-one` to show that a random record can be pulled down with
 encryption.
 
-5. Use `demonstrate-query` to demonstrate an equality query on encrypted data.
+5. Use `equality-query` to demonstrate an equality query on encrypted data.
 
 **TODO: This demo is underwhelming right now. I need to make it tell a story. I
 could also add client-side schema validation. And range encryption.

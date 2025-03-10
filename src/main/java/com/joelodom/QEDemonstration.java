@@ -74,7 +74,7 @@ public class QEDemonstration {
                 }
             }
             case "find-one" -> Members.findOne();
-            case "demonstrate-query" -> Members.findBySSN(RandomData.NO_SSN);
+            case "equality-query" -> Members.findBySSN(RandomData.NO_SSN);
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
                 System.out.println();
