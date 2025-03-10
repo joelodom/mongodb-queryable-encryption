@@ -26,6 +26,8 @@ public class Members {
 
     /**
      * This function adds random members to the encrypted collection.
+     * The encryption is transparent to the function because of the
+     * encrypted schema map.
      */
     public static void addRandomMembers(int number) {
         /**
