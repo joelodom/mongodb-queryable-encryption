@@ -6,7 +6,8 @@ A demonstration and sandbox for MongoDB Queryable Encryption.
 ### Installing MongoDB
 
 For this to work, you'll need MongoDB 8.0 or later. QE will work with MongoDB 7,
-but you'll be limited to equality queries only. I'm going to use my Atlas
+but you'll be limited to equality queries only, and this application uses range
+queries as well as equality queries . I'm going to use my Atlas
 instance, but you could also point to a local instance.
 See https://www.mongodb.com/docs/manual/installation/ and
 https://www.mongodb.com/docs/atlas/getting-started/.
@@ -55,17 +56,20 @@ for those using VS Code, so Command + Shift + B works for me on my Mac.
 
 ## What to do when it runs
 
+This application simulates a simple call center application. Imagine that you
+own a gym and you have members that you need to manage.
+
 First type `help`. This will show you these commands:
 
 ```
   exit                  Exit the application.
   help                  Show this help message.
   status                Show the status of pretty much everything.
-  create-collection     Creates the test database.
+  create-collection     Creates the database. Run this on first use.
   destroy-database      Destroys the test database.
   add-members [number]  Insert [number] random member records.
   find-one              Query for one member record (semi-randomly).
-  equality-query        Demonstrate an equality query on encrypted data.
+  no-ssn-query          Query for members who don't have an SSN on file.
   age-query [age]       Query for members who are [age] or younger.
 ```
 
@@ -78,23 +82,21 @@ in the .env file you created above.
 2. Next I run `create-collection`. This creates the encrypted collection with the
 encrypted schema. I can now show this in the Atlas UI (or other tool) and
 I can also use `status` at this point to show the server-side encrypted schema
-map on the  server itself. This is a good time to explain the difference
-between server-side schemas and client-side schemas.
+map on. This is a good time to explain the difference between server-side
+schemas and client-side schemas.
 
-3. It's time to add an item to the collection. `add-members` adds random items
-to the collection. Browse to the database in one of the tools to show that the
-ssn field is encrypted.
+3. `add-members` adds random members to the collection. Browse to the database
+in one of the tools to show that the ssn field and age are encrypted.
 
-4. Use `find-one` to show that a random record can be pulled down with
-encryption.
+4. Use `find-one` to show that a random record can be pulled down and show what
+it looks like decrypted.
 
-5. Use `equality-query` to demonstrate an equality query on encrypted data.
+5. Use `no-ssn-query` to demonstrate an equality query on encrypted data.
 
 6. Use `age-query` to demonstrate a range query on encrypted data.
 
-**TODO: This demo is underwhelming right now. I need to make it tell a story. I
-could also add client-side schema validation. More interesting queries.
-Lots to do...**
+This demo is underwhelming right now. More enhancements are coming, but it's a
+place to start.
 
 ## Closing thoughts
 

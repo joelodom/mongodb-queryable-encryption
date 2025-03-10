@@ -19,7 +19,6 @@ public class QEDemonstration {
         // welcome messages
         System.out.println(Strings.WELCOME_MESSAGE);
         System.out.println();
-        printStatus();
 
         /**
          * This is a cheap REPL implementation. It'll do for now.
@@ -74,7 +73,7 @@ public class QEDemonstration {
                 }
             }
             case "find-one" -> Members.findOne();
-            case "equality-query" -> Members.findBySSN(RandomData.NO_SSN);
+            case "no-ssn-query" -> Members.findBySSN(RandomData.NO_SSN);
             case "age-query" -> Members.findByAge(Integer.parseInt(noun));
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
@@ -100,7 +99,9 @@ public class QEDemonstration {
         System.out.println("Status:");
         System.out.println();
 
-        System.out.println("MONGODB_URI: " + Env.MONGODB_URI);
+        // URI is redacted because it has my Atlas password in it and some day
+        // I'm going to show the demo and forget about that.
+        //System.out.println("MONGODB_URI: " + Env.MONGODB_URI);
         System.out.println("SHARED_LIB_PATH: " + Env.SHARED_LIB_PATH);
         System.out.println("DATABASE_NAME: " + Env.DATABASE_NAME);
         System.out.println("COLLECTION_NAME: " + Env.COLLECTION_NAME);
