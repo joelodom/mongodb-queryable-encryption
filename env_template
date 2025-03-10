@@ -1,9 +1,21 @@
+#####
 #
-# These are teh MongoDB connection parameters. They must be changed.
+# Parameters that must be changed such as your MONGODB_URI are at the top of
+# this file. Other constants may be changed but probably don't need to be
+# are below those. See the README.
+#
+####
+
+#
+# These parameters MUST be changed. See the README.
 #
 
 MONGODB_URI="<Your MongoDB URI>"
 SHARED_LIB_PATH="<Full path to your Automatic Encryption Shared Library>"
+
+
+
+
 
 #
 # These are the default database and collection names. They may be changed.

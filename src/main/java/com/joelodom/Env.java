@@ -2,7 +2,13 @@ package com.joelodom;
 
 import io.github.cdimascio.dotenv.Dotenv;
 
+/**
+ * Loads our environment from the .env file on startup. Remember to make a copy
+ * of env_template and change the parameters there as needed.
+ */
+
 public class Env {
+
     public static final String MONGODB_URI;
     public static final String SHARED_LIB_PATH;
 
@@ -13,10 +19,6 @@ public class Env {
     public static final String KEY_VAULT_COLLECTION;
     public static final String KEY_VAULT_NAMESPACE;
 
-    /**
-     * Loads our environment from the .env file on startup. Remember to make a
-     * copy of env_template and change the parameters there as needed.
-     */
     static {
         Dotenv dotenv = Dotenv.load();
 

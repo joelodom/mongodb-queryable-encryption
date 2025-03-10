@@ -7,14 +7,21 @@ import org.bson.json.JsonWriterSettings;
 
 /**
  * See the README.md for documentation about the overall demonstration.
+ * There are lots of comments in the source code, but the README gives the
+ * big picture, so start there. This file isn't as commented because it's
+ * not really about QE and is pretty straightforward.
  */
+
 public class QEDemonstration {
     public static void main(String[] args) {
         // welcome messages
         System.out.println(Strings.WELCOME_MESSAGE);
+        System.out.println();
         printStatus();
 
-        // REPL
+        /**
+         * This is a cheap REPL implementation. It'll do for now.
+         */
         try (  // to clean up the resources
             Scanner scanner = new Scanner(System.in)) {
             while (true) {

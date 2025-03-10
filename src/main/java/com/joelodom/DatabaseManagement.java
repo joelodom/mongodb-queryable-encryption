@@ -16,29 +16,56 @@ import com.mongodb.client.model.CreateEncryptedCollectionParams;
 import com.mongodb.client.vault.ClientEncryption;
 import com.mongodb.client.vault.ClientEncryptions;
 
+/**
+ * This is the database management class. It acts as a static class and is used
+ * to do things like create the database with the encrypted collection.
+ */
 public class DatabaseManagement {
+
     private static final Map<String, Object> EXTRA_OPTIONS = new HashMap<>();
     private static final AutoEncryptionSettings AUTO_ENCRYPTION_SETTINGS;
     private static final MongoClientSettings CLIENT_SETTINGS;
     private static final MongoClient ENCRYPTED_MONGO_CLIENT;
 
-    /**
-     * TODO: This deserves some commenting.
-     */
-
     static {
+        /**
+         * See the README which discusses the crypt_shared library and provides
+         * some references.
+         */
+
         EXTRA_OPTIONS.put("cryptSharedLibPath", Env.SHARED_LIB_PATH);
 
+        // final Map<String, BsonDocument> SCHEMA_MAP = Map.of(
+        //     Env.DATABASE_NAME + "." + Env.COLLECTION_NAME,
+        //     Schemas.ENCRYPTED_FIELDS_MAP
+        // );
+        /**
+         * Automatic encryption is a QE feature that allows you to insert into
+         * the database and query the database without having to specify what to
+         * encrypt every time. The encryption and decryption become transparent
+         * to your client.
+         *
+         * When you're using server-side schema validation, if you try to insert
+         * into the database without encryption (maybe something in the code
+         * changes accidentally and the client omits the automatic encryption),
+         * you will see an error alerting you that the field that was supposed
+         * to be encrypted wasn't.
+         *
+         * The AutoEncryptionSettings object sets up automatic encryption and is
+         * applied to the MongoClientSettings so that your Mongo Client can
+         * perform the automatic encryption during the session.
+         */
         AUTO_ENCRYPTION_SETTINGS = AutoEncryptionSettings.builder()
                 .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
                 .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
                 .extraOptions(EXTRA_OPTIONS)
+                //TODO   .schemaMap(SCHEMA_MAP)
                 .build();
 
         CLIENT_SETTINGS = MongoClientSettings.builder()
-            .applyConnectionString(new ConnectionString(Env.MONGODB_URI))
-            .autoEncryptionSettings(AUTO_ENCRYPTION_SETTINGS)
-            .build();
+                .applyConnectionString(new ConnectionString(Env.MONGODB_URI))
+                .autoEncryptionSettings(AUTO_ENCRYPTION_SETTINGS)
+                .build();
 
         ENCRYPTED_MONGO_CLIENT = MongoClients.create(CLIENT_SETTINGS);
     }
@@ -60,52 +87,57 @@ public class DatabaseManagement {
          */
 
         ClientEncryptionSettings clientEncryptionSettings
-            = ClientEncryptionSettings.builder()
-                .keyVaultMongoClientSettings(MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(Env.MONGODB_URI)).build())
-                .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
-                .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
-                .build();
+                = ClientEncryptionSettings.builder()
+                        .keyVaultMongoClientSettings(MongoClientSettings.builder()
+                                .applyConnectionString(
+                                    new ConnectionString(Env.MONGODB_URI)).build())
+                        .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
+                        .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
+                        .build();
 
         ClientEncryption clientEncryption
-            = ClientEncryptions.create(clientEncryptionSettings);
+                = ClientEncryptions.create(clientEncryptionSettings);
+
         /**
          * A QE-enabled collection should have a server-side schema to enforce
-         * rejection of non-encrypted payloads that should be encrypted.
+         * rejection of non-encrypted payloads that should be encrypted. This
+         * bit of code creates the collection with the encryption schema.
+         * 
+         * There are also some metadata collections and an encrypted key vault
+         * collection that are at this time. See
+         * https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/manage-collections/
+         * for more information about those.
          */
 
         CreateCollectionOptions createCollectionOptions
-            = new CreateCollectionOptions().encryptedFields(
-                Schemas.ENCRYPTED_FIELDS_MAP);
+                = new CreateCollectionOptions().encryptedFields(
+                        Schemas.ENCRYPTED_FIELDS_MAP);
 
         /**
-         * Here's where we create the collection. Remember we're just using
-         * a "local" key provider for this demonstration.
+         * Here's where we create the collection. Remember we're just using a
+         * "local" key provider for this demonstration. Normally you would use
+         * a key vault.
          */
 
-        try {
-            clientEncryption.createEncryptedCollection(
-                    getDatabase(),
-                    Env.COLLECTION_NAME,
-                    createCollectionOptions,
-                    new CreateEncryptedCollectionParams("local"));
-        } 
-        catch (Exception e) {
-            System.out.println(
-                "Unable to create encrypted collection: " + e.getMessage());
-            System.out.println();
-            return;
-        }
+        clientEncryption.createEncryptedCollection(
+                getDatabase(),
+                Env.COLLECTION_NAME,
+                createCollectionOptions,
+                new CreateEncryptedCollectionParams("local"));
 
-        System.out.println("Created encrypted collection " + Env.COLLECTION_NAME);
+        System.out.println(
+            "Created encrypted collection " + Env.COLLECTION_NAME);
         System.out.println();
     }
 
     /**
-     * This drops the database without ceremony.
-     * TODO: I need to drop the keyvault and all and remember to test
-     * Can we add "undork dropCollection for QE collections to the backlog? If you run a drop collection command on a QE collection outside an encrypted session, it really screws things up.
+     * This drops the database without ceremony. TODO: I need to drop the
+     * keyvault and all and remember to test Can we add "undork dropCollection
+     * for QE collections to the backlog? If you run a drop collection command
+     * on a QE collection outside an encrypted session, it really screws things
+     * up.
      */
+    
     public static void destroyDatabase() {
         ENCRYPTED_MONGO_CLIENT.getDatabase(Env.DATABASE_NAME).drop();
         System.out.println("Destroyed database " + getDatabase().getName());

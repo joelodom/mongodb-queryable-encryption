@@ -3,6 +3,11 @@ package com.joelodom;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * I won't document this utitily class in detail. It's just for creating random
+ * data for demonstration purposes.
+ */
+
 public class RandomData {
     private final static List<String> NAMES = List.of(
         "Alice",

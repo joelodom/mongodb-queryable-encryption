@@ -10,7 +10,9 @@ import org.bson.BsonString;
 public class Schemas {
     /**
      * The encrypted fields map specifices which fields in the collection
-     * should be encrypted, and which query type is allowed for the field.
+     * should be encrypted, and which query type is allowed for the encrypted
+     * fields.
+     * 
      * See https://www.mongodb.com/docs/manual/core/queryable-encryption/qe-create-encryption-schema/#std-label-qe-create-encryption-schema.
      */
 

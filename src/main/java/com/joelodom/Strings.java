@@ -1,5 +1,10 @@
 package com.joelodom;
 
+/**
+ * This is just a data class for strings used elsewhere. Nothing much to see
+ * here.
+ */
+
 public final class Strings {
 
     public static final String WELCOME_MESSAGE =
