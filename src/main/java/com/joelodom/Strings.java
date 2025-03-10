@@ -22,5 +22,6 @@ see the README.md file.
   destroy-database      Destroys the test database.
   add-members [number]  Insert [number] random member records.
   find-one              Query for one member record (semi-randomly).
+  demonstrate-query     Demonstrate an equality query on encrypted data.
 """;
 }
