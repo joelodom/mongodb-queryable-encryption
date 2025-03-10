@@ -12,6 +12,10 @@ public class RandomData {
     public final static String NO_SSN = "000-00-0000"; // reserved SSN
     public final static int CHANCE_OF_NO_SSN = 1; // percent
 
+    public final static int MAX_AGE = 150; // optimism!
+    public final static double AGE_MEAN = 50.0;
+    public final static double AGE_STD_DEV = 18.0;
+
     private final static List<String> NAMES = List.of(
             "Alice",
             "Bob",
@@ -60,7 +64,6 @@ public class RandomData {
          * non-detrministic encryption, the records with NO_SSN are
          * indistinguishable from those with an SSN.
          */
-
         if (ThreadLocalRandom.current().nextInt(100) > CHANCE_OF_NO_SSN) {
             area = ThreadLocalRandom.current().nextInt(100, 1000);
             group = ThreadLocalRandom.current().nextInt(10, 100);
@@ -68,5 +71,19 @@ public class RandomData {
         }
 
         return String.format("%03d-%02d-%04d", area, group, serial);
+    }
+
+    public static int generateRandomAge() {
+        int age = (int) Math.round(
+            AGE_MEAN + AGE_STD_DEV * ThreadLocalRandom.current().nextGaussian());
+        
+        // Clamp the age between 0 and 100
+        if (age < 0) {
+            age = 0;
+        } else if (age > MAX_AGE) {
+            age = MAX_AGE;
+        }
+
+        return age;
     }
 }

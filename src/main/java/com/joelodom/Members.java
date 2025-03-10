@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.BsonDocument;
+import org.bson.BsonInt32;
 import org.bson.BsonString;
 import org.bson.Document;
 import org.bson.json.JsonWriterSettings;
@@ -47,7 +48,8 @@ public class Members {
             while (documents.size() < toInsert) {
                 Document document = new Document("name",
                         RandomData.generateRandomFullName())
-                        .append("ssn", RandomData.generateRandomSSN());
+                        .append("ssn", RandomData.generateRandomSSN())
+                        .append("age", RandomData.generateRandomAge());
                 documents.add(document);
             }
 
@@ -92,9 +94,13 @@ public class Members {
     }
 
     public static void printFindResults(FindIterable<Document> it) {
+        int count = 0;
         for (Document doc : it) {
             printDocument(doc);
+            count++;
         }
+        System.out.println();
+        System.out.println("Found " + count + " results.");
         System.out.println();
     }
 
@@ -107,6 +113,13 @@ public class Members {
         BsonDocument filter = new BsonDocument(
             "ssn", new BsonString(ssn)
         );
+        printFindResults(find(filter));
+    }
+
+    public static void findByAge(int age) {
+        // Constructs a filter: { "age": { "$lte": age } }
+        BsonDocument filter = new BsonDocument(
+            "age", new BsonDocument("$lte", new BsonInt32(age)));
         printFindResults(find(filter));
     }
 }

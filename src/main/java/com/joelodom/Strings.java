@@ -23,5 +23,6 @@ see the README.md file.
   add-members [number]  Insert [number] random member records.
   find-one              Query for one member record (semi-randomly).
   equality-query        Demonstrate an equality query on encrypted data.
+  age-query [age]       Query for members who are [age] or younger.
 """;
 }

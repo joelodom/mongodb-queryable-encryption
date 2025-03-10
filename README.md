@@ -65,7 +65,8 @@ First type `help`. This will show you these commands:
   destroy-database      Destroys the test database.
   add-members [number]  Insert [number] random member records.
   find-one              Query for one member record (semi-randomly).
-  equality-query     Demonstrate an equality query on encrypted data.
+  equality-query        Demonstrate an equality query on encrypted data.
+  age-query [age]       Query for members who are [age] or younger.
 ```
 
 Here is my demonstration flow:
@@ -89,8 +90,10 @@ encryption.
 
 5. Use `equality-query` to demonstrate an equality query on encrypted data.
 
+6. Use `age-query` to demonstrate a range query on encrypted data.
+
 **TODO: This demo is underwhelming right now. I need to make it tell a story. I
-could also add client-side schema validation. And range encryption.
+could also add client-side schema validation. More interesting queries.
 Lots to do...**
 
 ## Closing thoughts

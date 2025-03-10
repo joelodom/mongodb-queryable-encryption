@@ -75,6 +75,7 @@ public class QEDemonstration {
             }
             case "find-one" -> Members.findOne();
             case "equality-query" -> Members.findBySSN(RandomData.NO_SSN);
+            case "age-query" -> Members.findByAge(Integer.parseInt(noun));
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
                 System.out.println();
