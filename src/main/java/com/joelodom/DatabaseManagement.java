@@ -3,6 +3,8 @@ package com.joelodom;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.Document;
+
 import com.mongodb.AutoEncryptionSettings;
 import com.mongodb.ClientEncryptionSettings;
 import com.mongodb.ConnectionString;
@@ -146,7 +148,7 @@ public class DatabaseManagement {
         System.out.println();
     }
 
-    public static MongoCollection getEncryptedCollection() {
+    public static MongoCollection<Document> getEncryptedCollection() {
         return getDatabase().getCollection(Env.COLLECTION_NAME);
     }
 }

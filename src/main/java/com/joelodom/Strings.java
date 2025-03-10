@@ -21,5 +21,6 @@ see the README.md file.
   create-collection     Creates the test database.
   destroy-database      Destroys the test database.
   add-members [number]  Insert [number] random member records.
+  find-one              Query for one member record (semi-randomly).
 """;
 }

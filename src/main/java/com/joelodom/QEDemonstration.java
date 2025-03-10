@@ -73,6 +73,7 @@ public class QEDemonstration {
                     Members.addRandomMembers(Integer.parseInt(noun));
                 }
             }
+            case "find-one" -> Members.findOne();
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
                 System.out.println();

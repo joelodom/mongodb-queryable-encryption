@@ -78,12 +78,16 @@ I can also use `status` at this point to show the server-side encrypted schema
 map on the  server itself. This is a good time to explain the difference
 between server-side schemas and client-side schemas.
 
-3. It's time to add an item to the collection. `add-member` adds a random item
-to the collection. I can show the encrypted item in the database.
+3. It's time to add an item to the collection. `add-members` adds random items
+to the collection. Browse to the database in one of the tools to show that the
+ssn field is encrypted.
 
-**TODO: This demo is underwhelming right now. Next is to add lots of members
-and show how query works. I could also add client-side schema validation.
-And range encryption. Lots to do...**
+4. Use `find-one` to show that a random record can be pulled down with
+encryption.
+
+**TODO: This demo is underwhelming right now. Next is to show a full query. I
+could also add client-side schema validation. And range encryption.
+Lots to do...**
 
 ## Closing thoughts
 
