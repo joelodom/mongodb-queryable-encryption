@@ -3,6 +3,7 @@ package com.joelodom;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.BsonDocument;
 import org.bson.Document;
 
 import com.mongodb.AutoEncryptionSettings;
@@ -57,13 +58,19 @@ public class DatabaseManagement {
          * The AutoEncryptionSettings object sets up automatic encryption and is
          * applied to the MongoClientSettings so that your Mongo Client can
          * perform the automatic encryption during the session.
+         * 
+         * TODO: Add discussion of client-side schema
          */
+
+        Map<String, BsonDocument> encryptedFieldsMap = new HashMap<>();
+        encryptedFieldsMap.put(Env.DATABASE_NAME + "." + Env.COLLECTION_NAME,
+            Schemas.ENCRYPTED_FIELDS_MAP);
 
         AUTO_ENCRYPTION_SETTINGS = AutoEncryptionSettings.builder()
                 .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
                 .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
                 .extraOptions(EXTRA_OPTIONS)
-                //TODO   .schemaMap(SCHEMA_MAP)
+                .encryptedFieldsMap(encryptedFieldsMap)
                 .build();
 
         CLIENT_SETTINGS = MongoClientSettings.builder()
