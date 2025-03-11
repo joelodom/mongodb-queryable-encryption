@@ -25,9 +25,9 @@ public class Members {
             = JsonWriterSettings.builder().indent(true).build();
 
     /**
-     * This function adds random members to the encrypted collection.
-     * The encryption is transparent to the function because of the
-     * encrypted schema map.
+     * This function adds random members to the encrypted collection. The
+     * encryption is transparent to the function because of the encrypted schema
+     * map.
      */
     public static void addRandomMembers(int number) {
         /**
@@ -113,7 +113,7 @@ public class Members {
 
     public static void findBySSN(String ssn) {
         BsonDocument filter = new BsonDocument(
-            "ssn", new BsonString(ssn)
+                "ssn", new BsonString(ssn)
         );
         printFindResults(find(filter));
     }
@@ -121,7 +121,21 @@ public class Members {
     public static void findByAge(int age) {
         // Constructs a filter: { "age": { "$lte": age } }
         BsonDocument filter = new BsonDocument(
-            "age", new BsonDocument("$lte", new BsonInt32(age)));
+                "age", new BsonDocument("$lte", new BsonInt32(age)));
         printFindResults(find(filter));
+    }
+
+    public static void compoundFilter(int age, String ssn) {
+        /**
+         *
+         * {
+         * "$and": [ { "age": { "$lte": 31 } }, { "ssn": { "$eq": "123-45-6789"
+         * } } ] }
+         */
+
+        BsonDocument query = new BsonDocument(
+                "age", new BsonDocument("$lte", new BsonInt32(age)))
+                .append("ssn", new BsonString(ssn));
+        printFindResults(find(query));
     }
 }

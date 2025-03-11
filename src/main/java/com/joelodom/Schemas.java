@@ -20,6 +20,33 @@ public class Schemas {
      * 
      * See https://www.mongodb.com/docs/manual/core/queryable-encryption/qe-create-encryption-schema/
      * and https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/encrypt-and-query/#std-label-qe-field-configuration
+     * 
+     * This schema map looks like this in JSON:
+
+            {
+            "fields": [
+                {
+                "keyId": null,
+                "path": "ssn",
+                "bsonType": "string",
+                "queries": {
+                    "queryType": "equality"
+                }
+                },
+                {
+                "keyId": null,
+                "path": "age",
+                "bsonType": "int",
+                "queries": {
+                    "queryType": "range",
+                    "max": 150,
+                    "min": 0
+                }
+                }
+            ]
+            }
+
+     * 
      */
     
     public static final BsonDocument ENCRYPTED_FIELDS_MAP;

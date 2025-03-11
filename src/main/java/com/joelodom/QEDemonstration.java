@@ -75,6 +75,13 @@ public class QEDemonstration {
             case "find-one" -> Members.findOne();
             case "no-ssn-query" -> Members.findBySSN(RandomData.NO_SSN);
             case "age-query" -> Members.findByAge(Integer.parseInt(noun));
+
+            /**
+             * Secret commands for those reading the code who want to go deeper.
+             */
+
+            case "compound-query" -> Members.compoundFilter(21, "000-00-0000");
+
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
                 System.out.println();
