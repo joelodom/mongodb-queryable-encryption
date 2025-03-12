@@ -21,6 +21,9 @@ run {
     standardInput = System.in
 }
 
+// See the README about building a JAR file with the crypt_shared dependency
+// built in.
+
 tasks.register('fatJar', Jar) {
     manifest {
         attributes 'Main-Class': application.mainClass // Defines the main class
@@ -33,6 +36,8 @@ tasks.register('fatJar', Jar) {
     from {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
+
+   from('lib')
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE // Ignore duplicate files
 }

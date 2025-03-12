@@ -11,6 +11,7 @@ public class Env {
 
     public static final String MONGODB_URI;
     public static final String SHARED_LIB_PATH;
+    public static final String SHARED_LIB_JAR_PATH;
 
     public static final String DATABASE_NAME;
     public static final String COLLECTION_NAME;
@@ -24,6 +25,7 @@ public class Env {
 
         MONGODB_URI = dotenv.get("MONGODB_URI");
         SHARED_LIB_PATH = dotenv.get("SHARED_LIB_PATH");
+        SHARED_LIB_JAR_PATH = dotenv.get("SHARED_LIB_JAR_PATH");
 
         DATABASE_NAME = dotenv.get("DATABASE_NAME");
         COLLECTION_NAME = dotenv.get("COLLECTION_NAME");
