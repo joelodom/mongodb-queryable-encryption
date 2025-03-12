@@ -1,5 +1,6 @@
 package com.joelodom;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Scanner;
@@ -19,6 +20,8 @@ public class QEDemonstration {
         // welcome messages
         System.out.println(Strings.WELCOME_MESSAGE);
         System.out.println();
+
+        maybeUnpackSharedLib();
 
         /**
          * This is a cheap REPL implementation. It'll do for now.
@@ -110,6 +113,7 @@ public class QEDemonstration {
         // I'm going to show the demo and forget about that.
         //System.out.println("MONGODB_URI: " + Env.MONGODB_URI);
         System.out.println("SHARED_LIB_PATH: " + Env.SHARED_LIB_PATH);
+        System.out.println("SHARED_LIB_JAR_PATH:" + Env.SHARED_LIB_JAR_PATH);
         System.out.println("DATABASE_NAME: " + Env.DATABASE_NAME);
         System.out.println("COLLECTION_NAME: " + Env.COLLECTION_NAME);
         System.out.println("KEY_VAULT_NAMESPACE: " + Env.KEY_VAULT_NAMESPACE);
@@ -123,6 +127,25 @@ public class QEDemonstration {
         System.out.println();
         for (Document c: DatabaseManagement.getDatabase().listCollections()) {
             System.out.println(c.toJson(jsonWriterSettings));
+        }
+    }
+
+    /**
+     * This unpacks the automatic encryption shared library from the JAR file,
+     * if it's configured to do so. See the README.
+     */
+    private static void maybeUnpackSharedLib() {
+        if (Env.SHARED_LIB_JAR_PATH.length() == 0) {
+            return; // using external library, not from JAR file
+        }
+
+        try {
+            FileExtractor.extractResource(
+                Env.SHARED_LIB_JAR_PATH,
+                Env.SHARED_LIB_PATH);
+        } catch (IOException e) {
+            System.out.println(
+                "Unable to extract shared library: " + e.getMessage());
         }
     }
 }

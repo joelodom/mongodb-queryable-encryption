@@ -27,3 +27,5 @@ replay_pid*
 .env
 .gradle/
 build/
+lib/
+*.dylib

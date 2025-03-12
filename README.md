@@ -1,5 +1,6 @@
 # mongodb-queryable-encryption
-A demonstration and sandbox for MongoDB Queryable Encryption.
+A demonstration and sandbox for MongoDB Queryable Encryption. This is a work
+in progress, so take it all with a grain.
 
 ## First things first
 
@@ -115,3 +116,53 @@ The best place to go for help is https://www.mongodb.com/community/forums/.
 If you get too stuck, you can try to contact me at joel.odom@mongodb.com, but
 please understand that I'm unable to respond to every question and I tend
 to be really slow to reply to emails.
+
+## Advanced material
+
+I've been using this project to try out some things that are more advanced than
+the demonstration documented above. I'll talk about some of those here. Keep
+in mind that these things may void your warranty.
+
+### Secret commands
+
+I'm not going to document all of the secret commands here, but take a peek at
+`QEDemonstration.java` and you'll find some secret commands that you can
+reverse engineer as I'll not document everything here.
+
+### Building a fat JAR file that includes the automatic encryption shared library
+
+I've included a build task called `fatJar` to create a JAR file that includes
+the MongoDB dependencies AND that you can include your crypt_shared library in.
+I'm not an expert on packaging Java projects, so take it with a grain.
+I've only tested this on macOS. Here's what I know.
+
+There is a commented out `fatJar` task in `build.gradle`. Uncomment it. Note
+that the line `from(lib)` pulls the contents of a `lib` folder in the project
+root into a `lib` folder in the JAR. Copy your crypt_shared library into a new
+`lib` folder into the project root.
+
+Build the JAR with `gradle clean fatJar`. Now, on my Mac, when I run
+`jar tf build/libs/QEDemonstration.jar`, I can see `lib/mongo_crypt_v1.dylib` in
+the contents.
+
+We need to let the application know that we're using the shared library
+from the JAR file. To do that, modify your .env (see above) to set
+SHARED_LIB_PATH to a folder that exists followed by the name of the shared
+library for your system. The shared library will be copied out
+of the JAR file into that folder and file at runtime.
+Next, switch SHARED_LIB_JAR_PATH from `""` to `/lib/<name of your shared lib>`.
+
+On my Mac, I have these set to
+
+```
+SHARED_LIB_PATH="mongo_crypt_v1.dylib"
+SHARED_LIB_JAR_PATH="/lib/mongo_crypt_v1.dylib"
+```
+
+which copies the shared library out of the JAR file into whatever folder
+I'm running it from.
+
+To run the JAR, try `java -jar QEDemonstration.jar`. You can copy the JAR file
+to some random folder to prove that it actually contains and loads the
+crypt_shared out of the JAR. Remember that you'll need the `.env` file there,
+too.

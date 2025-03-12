@@ -13,7 +13,13 @@
 MONGODB_URI="<Your MongoDB URI>"
 SHARED_LIB_PATH="<Full path to your Automatic Encryption Shared Library>"
 
+#
+# If you have packaged the crypt_shared library in a JAR file, you must
+# extract it. See the README.
+#
 
+SHARED_LIB_JAR_PATH=""
+# SHARED_LIB_JAR_PATH="/lib/mongo_crypt_v1.dylib"
 
 
 
