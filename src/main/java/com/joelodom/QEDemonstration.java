@@ -129,7 +129,7 @@ public class QEDemonstration {
      */
     private static void maybeUnpackSharedLib() {
         if (Env.SHARED_LIB_JAR_PATH.length() == 0) {
-            return; // using external library
+            return; // using external library, not from JAR file
         }
 
         try {

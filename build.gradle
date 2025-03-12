@@ -24,22 +24,22 @@ run {
 // See the README about building a JAR file with the crypt_shared dependency
 // built in.
 
-tasks.register('fatJar', Jar) {
-    manifest {
-        attributes 'Main-Class': application.mainClass // Defines the main class
-    }
+// tasks.register('fatJar', Jar) {
+//     manifest {
+//         attributes 'Main-Class': application.mainClass // Defines the main class
+//     }
     
-    // Include compiled classes
-    from sourceSets.main.output
+//     // Include compiled classes
+//     from sourceSets.main.output
 
-    // Include all dependencies by extracting them inside the JAR
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
+//     // Include all dependencies by extracting them inside the JAR
+//     from {
+//         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+//     }
 
-   from('lib') {
-    into('lib')
-   }
+//    from('lib') {
+//     into('lib')
+//    }
 
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // Ignore duplicate files
-}
+//     duplicatesStrategy = DuplicatesStrategy.EXCLUDE // Ignore duplicate files
+// }
