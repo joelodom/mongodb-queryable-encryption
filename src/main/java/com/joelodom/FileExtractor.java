@@ -2,6 +2,7 @@ package com.joelodom;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -17,12 +18,17 @@ public class FileExtractor {
      * @throws IOException if an I/O error occurs during extraction
      */
     public static void extractResource(String resourcePath, String destinationStr) throws IOException {
-        // Get an input stream for the resource from the JAR.
-        try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourcePath)) {
-            if (in == null) {
-                throw new IllegalArgumentException("Resource not found: " + resourcePath);
-            }
+        // System.out.println("*****");
+        // System.out.println(System.getProperty("java.class.path"));
+        // System.out.println("*****");
 
+        // Get an input stream for the resource from the JAR.
+        URL url = QEDemonstration.class.getResource(resourcePath);
+        if (url == null) {
+            throw new IllegalArgumentException("Resource not found: " + resourcePath);
+        }
+
+        try (InputStream in = url.openStream()) {
             // Define the destination path.
             Path destination = Paths.get(destinationStr);
 
