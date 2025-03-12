@@ -146,7 +146,7 @@ Build the JAR with `gradle clean fatJar`. Now, on my Mac, when I run
 the contents.
 
 We need to let the application know that we're using the shared library
-from the JAR file. To do that, modify your .env (see above) to set
+from the JAR file. To do that, modify your `.env` (see above) to set
 SHARED_LIB_PATH to a folder that exists followed by the name of the shared
 library for your system. The shared library will be copied out
 of the JAR file into that folder and file at runtime.

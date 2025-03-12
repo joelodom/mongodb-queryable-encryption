@@ -13,6 +13,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
 import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.CreateEncryptedCollectionParams;
 import com.mongodb.client.vault.ClientEncryption;
@@ -145,6 +146,28 @@ public class DatabaseManagement {
     public static void destroyDatabase() {
         ENCRYPTED_MONGO_CLIENT.getDatabase(Env.DATABASE_NAME).drop();
         System.out.println("Destroyed database " + getDatabase().getName());
+        System.out.println();
+    }
+
+    /**
+     * Reverse engineer this and use at your own risk.
+     */
+    public static void destroyAllDatabases() {
+        if (Env.VOID_WARRANTY) {
+            MongoIterable<String> databaseNames
+                = ENCRYPTED_MONGO_CLIENT.listDatabaseNames();
+            for (String dbName : databaseNames) {
+                if (dbName.equals("admin")) {
+                    continue;
+                }
+                System.out.println("Dropping database: " + dbName);
+                ENCRYPTED_MONGO_CLIENT.getDatabase(dbName).drop();
+            }
+        }
+        else {
+            System.out.println("I'm sorry, Dev. I'm afraid I can't do that.");
+        }
+
         System.out.println();
     }
 

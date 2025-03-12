@@ -20,6 +20,8 @@ public class Env {
     public static final String KEY_VAULT_COLLECTION;
     public static final String KEY_VAULT_NAMESPACE;
 
+    public static boolean VOID_WARRANTY = false;
+
     static {
         Dotenv dotenv = Dotenv.load();
 
@@ -33,5 +35,10 @@ public class Env {
         KEY_VAULT_DATABASE = dotenv.get("KEY_VAULT_DATABASE");
         KEY_VAULT_COLLECTION = dotenv.get("KEY_VAULT_COLLECTION");
         KEY_VAULT_NAMESPACE = KEY_VAULT_DATABASE + "." + KEY_VAULT_COLLECTION;
+
+        String voidWarranty = dotenv.get("VOID_WARRANTY");
+        if (voidWarranty != null) {
+            VOID_WARRANTY = voidWarranty.equals("true");
+        }
     }
 }
