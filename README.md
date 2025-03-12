@@ -149,4 +149,4 @@ SHARED_LIB_PATH to a folder that exists. The application will copy the shared
 library out of your JAR into that folder. Next, switch SHARED_LIB_JAR_PATH
 from `""` to `/<name of your shared lib>`.
 
-To run the JAR, try `gradle clean fatJar run`.
+To run the JAR, try `java -jar <path>/QEDemonstration.jar`.

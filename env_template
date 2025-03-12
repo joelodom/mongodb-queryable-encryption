@@ -19,7 +19,7 @@ SHARED_LIB_PATH="<Full path to your Automatic Encryption Shared Library>"
 #
 
 SHARED_LIB_JAR_PATH=""
-# SHARED_LIB_JAR_PATH="/mongo_crypt_v1.dylib"
+# SHARED_LIB_JAR_PATH="/lib/mongo_crypt_v1.dylib"
 
 
 

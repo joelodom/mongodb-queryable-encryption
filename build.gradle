@@ -37,7 +37,9 @@ tasks.register('fatJar', Jar) {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
-   from('lib')
+   from('lib') {
+    into('lib')
+   }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE // Ignore duplicate files
 }
