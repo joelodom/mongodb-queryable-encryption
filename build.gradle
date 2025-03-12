@@ -20,3 +20,19 @@ application {
 run {
     standardInput = System.in
 }
+
+tasks.register('fatJar', Jar) {
+    manifest {
+        attributes 'Main-Class': application.mainClass // Defines the main class
+    }
+    
+    // Include compiled classes
+    from sourceSets.main.output
+
+    // Include all dependencies by extracting them inside the JAR
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE // Ignore duplicate files
+}
