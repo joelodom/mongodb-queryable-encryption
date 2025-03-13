@@ -188,4 +188,31 @@ public class DatabaseManagement {
     public static MongoCollection<Document> getEncryptedCollection() {
         return getDatabase().getCollection(Env.COLLECTION_NAME);
     }
+
+    /**
+     * Queryable Encryption collections use semi-hidden metadata collections
+     * to store encrypted index data (Reference https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/manage-collections/).
+     * An encrypted client is aware of these collections and drops them when
+     * you drop an encrypted collection. This shows that unencrypted clients
+     * do not clean up the metadata collections, something we can and should
+     * remedy.
+     * 
+     * Normally the MongoDB Atlas UI and Compass will hide these metadata
+     * collections, but I use mongosh to see them.
+     */
+    public static void dropCollection() {
+        // I have affirmed this drops the aux collections
+        getEncryptedCollection().drop();
+        System.out.println(
+            "Dropped " + Env.COLLECTION_NAME + " with encrypted client.");
+
+        // I have affirmed thit LEAVES the aux collections
+        // MongoClient unencryptedClient = MongoClients.create(Env.MONGODB_URI);
+        // unencryptedClient.getDatabase(
+        //     Env.DATABASE_NAME).getCollection(Env.COLLECTION_NAME).drop();
+        // System.out.println(
+        //     "Dropped " + Env.COLLECTION_NAME + " WITHOUT encrypted client.");
+
+        System.out.println();
+    }
 }

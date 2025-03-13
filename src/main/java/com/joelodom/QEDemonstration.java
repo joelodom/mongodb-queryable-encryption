@@ -85,6 +85,7 @@ public class QEDemonstration {
 
             case "compound-query" -> Members.compoundFilter(21, "000-00-0000");
             case "destroy-all-databases" -> DatabaseManagement.destroyAllDatabases();
+            case "drop-collection" -> DatabaseManagement.dropCollection();
 
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
