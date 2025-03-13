@@ -2,6 +2,7 @@ package com.joelodom;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.bson.Document;
 
@@ -154,10 +155,11 @@ public class DatabaseManagement {
      */
     public static void destroyAllDatabases() {
         if (Env.VOID_WARRANTY) {
+            Set RESERVED_SET = Set.of("admin", "config", "local");
             MongoIterable<String> databaseNames
                 = ENCRYPTED_MONGO_CLIENT.listDatabaseNames();
             for (String dbName : databaseNames) {
-                if (dbName.equals("admin")) {
+                if (RESERVED_SET.contains(dbName)) {
                     continue;
                 }
                 System.out.println("Dropping database: " + dbName);
