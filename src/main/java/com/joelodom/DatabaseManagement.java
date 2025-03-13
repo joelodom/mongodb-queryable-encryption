@@ -84,6 +84,10 @@ public class DatabaseManagement {
         return getEncryptedClient().getDatabase(Env.DATABASE_NAME);
     }
 
+    public static MongoDatabase getKeyVault() {
+        return getEncryptedClient().getDatabase(Env.KEY_VAULT_DATABASE);
+    }
+
     public static void createEncryptedCollection() {
 
         /**
@@ -137,16 +141,24 @@ public class DatabaseManagement {
     }
 
     /**
-     * This drops the database without ceremony. TODO: I need to drop the
-     * keyvault and all and remember to test Can we add "undork dropCollection
+     * This drops the database without ceremony. It also drops the key
+     * vault database. If you don't drop the key vault database it's not the
+     * end of the world, but it wouldn't be helpful anymore and could grow
+     * with useless keys if you rerun the demonstration.
+     * 
+     * 
+     * TODO: test Can we add "undork dropCollection
      * for QE collections to the backlog? If you run a drop collection command
      * on a QE collection outside an encrypted session, it really screws things
      * up.
      */
     
     public static void destroyDatabase() {
-        ENCRYPTED_MONGO_CLIENT.getDatabase(Env.DATABASE_NAME).drop();
-        System.out.println("Destroyed database " + getDatabase().getName());
+        getDatabase().drop();
+        getKeyVault().drop();
+
+        System.out.println("Destroyed databases "
+            + getDatabase().getName() + " and " + getKeyVault().getName());
         System.out.println();
     }
 
