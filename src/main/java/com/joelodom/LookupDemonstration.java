@@ -1,10 +1,14 @@
 package com.joelodom;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.bson.Document;
 
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.result.InsertManyResult;
 
 /**
@@ -39,11 +43,15 @@ public final class LookupDemonstration {
 
         System.out.println("Creating the locations colletion...");
 
-        DatabaseManagement.getDatabase()
-            .createCollection(LOCATIONS_COLLECTION_NAME);
+        // Create the collection
+        MongoDatabase db = DatabaseManagement.getDatabase();
+        db.createCollection(LOCATIONS_COLLECTION_NAME);
+        MongoCollection locationsCollection
+            = db.getCollection(LOCATIONS_COLLECTION_NAME);
+
+        // Populate the collection
 
         List<Document> documents = new ArrayList<>(NUMBER_OF_LOCATIONS);
-
         while (documents.size() < NUMBER_OF_LOCATIONS) {
             Document document = new Document("city",
                     RandomData.getRandomCity())
@@ -51,9 +59,7 @@ public final class LookupDemonstration {
             documents.add(document);
         }
 
-        InsertManyResult result = DatabaseManagement.getDatabase()
-            .getCollection(LOCATIONS_COLLECTION_NAME).insertMany(documents);
-
+        InsertManyResult result = locationsCollection.insertMany(documents);
         if (!result.wasAcknowledged()) {
             System.out.println("Failed to insert the records.");
             System.out.println();
@@ -64,8 +70,26 @@ public final class LookupDemonstration {
             "Successfully inserted " + NUMBER_OF_LOCATIONS + " locations.");
         System.out.println();
 
+        /**
+         * Now lookup members by location.
+         */
 
+        // Create the $lookup stage to join with the "members" collection on zipCode
+        Document lookupStage = new Document("$lookup", 
+            new Document("from", "members")
+                .append("localField", "zipCode")
+                .append("foreignField", "zipCode")
+                .append("as", "memberInfo")
+        );
 
+        // Run the aggregation pipeline
+        AggregateIterable<Document> results = locationsCollection.aggregate(
+            Arrays.asList(lookupStage));
+
+        // Iterate through and print each resulting document
+        for (Document doc : results) {
+            System.out.println(doc.toJson());
+        }
 
 
 
