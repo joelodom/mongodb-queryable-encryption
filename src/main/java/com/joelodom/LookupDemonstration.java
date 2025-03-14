@@ -15,7 +15,8 @@ import com.mongodb.client.result.InsertManyResult;
  * This is to demonstrate how $lookup and QE behave together.
  * Comments are inline.
  * 
- * TODO: Reference new documentation here.
+ * TODO: Reference new documentation here and NOTE THAT THIS WILL NOT WORK
+ * PRE-MONGOD-8.1.
  */
 
 public final class LookupDemonstration {
