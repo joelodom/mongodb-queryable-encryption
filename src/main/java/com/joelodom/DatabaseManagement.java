@@ -136,7 +136,7 @@ public class DatabaseManagement {
                 new CreateEncryptedCollectionParams("local"));
 
         System.out.println(
-            "Created encrypted collection " + Env.COLLECTION_NAME);
+            "Created encrypted collection, " + Env.COLLECTION_NAME + ".");
         System.out.println();
     }
 

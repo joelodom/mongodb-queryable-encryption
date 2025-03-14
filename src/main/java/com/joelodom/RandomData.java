@@ -112,4 +112,32 @@ public class RandomData {
         int index = ThreadLocalRandom.current().nextInt(zipList.size());
         return zipList.get(index);
     }
+
+    private static final String[] CITIES = {
+        "New York", "Los Angeles", "Chicago", "Houston", "Phoenix",
+        "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose",
+        "Austin", "Jacksonville", "Fort Worth", "Columbus", "Charlotte",
+        "San Francisco", "Indianapolis", "Seattle", "Denver", "Washington",
+        "Boston", "El Paso", "Detroit", "Nashville", "Portland", "Memphis",
+        "Oklahoma City", "Las Vegas", "Louisville", "Baltimore",
+        "Milwaukee", "Albuquerque", "Tucson", "Fresno", "Sacramento",
+        "Kansas City", "Mesa", "Atlanta", "Omaha", "Raleigh",
+        "Colorado Springs", "Miami", "Long Beach", "Virginia Beach", "Oakland",
+        "Minneapolis", "Tulsa", "Wichita", "New Orleans", "Arlington",
+        "London", "Paris", "Berlin", "Madrid", "Rome", "Vienna", "Barcelona",
+        "Amsterdam", "Brussels", "Munich",
+        "Milan", "Prague", "Warsaw", "Lisbon", "Dublin", "Zurich", "Stockholm",
+        "Copenhagen", "Oslo", "Helsinki",
+        "Manchester", "Edinburgh", "Birmingham", "Glasgow", "Naples", "Seville",
+        "Valencia", "Bordeaux", "Lyon", "Marseille",
+        "Frankfurt", "Hamburg", "Geneva", "Athens",
+        "Sydney", "Melbourne", "Brisbane", "Perth", "Adelaide", "Gold Coast",
+        "Canberra", "Newcastle", "Wollongong", "Geelong",
+        "Hobart", "Townsville", "Cairns", "Toowoomba", "Ballarat"
+    };
+
+    public static String getRandomCity() {
+        int index = ThreadLocalRandom.current().nextInt(CITIES.length);
+        return CITIES[index];
+    }
 }
