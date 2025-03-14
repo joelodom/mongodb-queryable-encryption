@@ -31,7 +31,9 @@ public class Members {
      */
     public static void addRandomMembers(int number) {
         /**
-         * First we create a document with one field, ssn, which is encrypted.
+         * First we create a document with an encrypted SSN and an encrypted
+         * age. SSN is equality searchable and age is range searchable. Other
+         * fields are unencrypted.
          *
          * TODO: Error if the database doesn't exist or it will create a
          * collection that doesn't have an encryption schema. Or add client-side
@@ -51,7 +53,8 @@ public class Members {
                 Document document = new Document("name",
                         RandomData.generateRandomFullName())
                         .append("ssn", RandomData.generateRandomSSN())
-                        .append("age", RandomData.generateRandomAge());
+                        .append("age", RandomData.generateRandomAge())
+                        .append("zipCode", RandomData.generateRandomZipCode());
                 documents.add(document);
             }
 

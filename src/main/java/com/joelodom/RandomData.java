@@ -1,6 +1,9 @@
 package com.joelodom;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -75,8 +78,8 @@ public class RandomData {
 
     public static int generateRandomAge() {
         int age = (int) Math.round(
-            AGE_MEAN + AGE_STD_DEV * ThreadLocalRandom.current().nextGaussian());
-        
+                AGE_MEAN + AGE_STD_DEV * ThreadLocalRandom.current().nextGaussian());
+
         // Clamp the age between 0 and 100
         if (age < 0) {
             age = 0;
@@ -85,5 +88,28 @@ public class RandomData {
         }
 
         return age;
+    }
+
+    public static final int NUMBER_OF_ZIP_CODES = 10;
+    public static List<String> zipList; // our gym locations
+
+    static {
+        final int MIN_ZIP = 501;   // Represents "00501"
+        final int MAX_ZIP = 99950; // The highest valid ZIP code
+
+        Set<String> pickSet = new HashSet<>(NUMBER_OF_ZIP_CODES);
+
+        while (pickSet.size() < NUMBER_OF_ZIP_CODES) {
+            int zipCode = ThreadLocalRandom.current().nextInt(
+                    MIN_ZIP, MAX_ZIP + 1);
+            pickSet.add(String.format("%05d", zipCode));
+        }
+
+        zipList = new ArrayList<>(pickSet);
+    }
+
+    public static String generateRandomZipCode() {
+        int index = ThreadLocalRandom.current().nextInt(zipList.size());
+        return zipList.get(index);
     }
 }
