@@ -166,3 +166,10 @@ To run the JAR, try `java -jar QEDemonstration.jar`. You can copy the JAR file
 to some random folder to prove that it actually contains and loads the
 crypt_shared out of the JAR. Remember that you'll need the `.env` file there,
 too.
+
+### Advanced QE documentation
+
+* MongoDB Client-Side Encryption Specification: https://github.com/mongodb/specifications/blob/89e91523b58e9de06d45da9329d3d2595307557c/source/client-side-encryption/client-side-encryption.md#clientencryption
+
+* Whitepapers published by the MongoDB Crypto Research Group: https://www.mongodb.com/company/research/cryptography-research-group
+

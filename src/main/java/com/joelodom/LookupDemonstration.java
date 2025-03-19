@@ -16,7 +16,7 @@ import com.mongodb.client.result.InsertManyResult;
  * Comments are inline.
  * 
  * TODO: Reference new documentation here and NOTE THAT THIS WILL NOT WORK
- * PRE-MONGOD-8.1.
+ * PRE-MONGODB-8.1.
  */
 
 public final class LookupDemonstration {
