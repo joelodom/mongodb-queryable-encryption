@@ -59,27 +59,48 @@ public class Schemas {
      * better just to generate them explicitly as part of the schema.
      * 
      * The schema is pulled from the server after the collection is created,
-     * so the same data keys are reused. TODO: rationalize this with client-side
+     * so the same data keys are reused. TODO: rationalize this with client-side and generally update this comment
      */
 
-    private static final BsonBinary DATA_KEY_SSN
-        = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
-            "local", new DataKeyOptions());
-    private static final BsonBinary DATA_KEY_AGE
-        = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
-            "local", new DataKeyOptions());
-
     static {
+        BsonBinary ssnKey, ageKey;
+        BsonDocument ssnKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
+            .getKeyByAltName("ssnKey");
+        BsonDocument ageKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
+            .getKeyByAltName("ssnKey");
+
+        if (ssnKeyDocument == null) {
+            ssnKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
+                "local", new DataKeyOptions().keyAltNames(
+                    Arrays.asList("ssnKey")
+                )
+            );
+        }
+        else {
+            ssnKey = ssnKeyDocument.getBinary("_id");
+        }
+
+        if (ageKeyDocument == null) {
+            ageKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
+                "local", new DataKeyOptions().keyAltNames(
+                    Arrays.asList("ageKey")
+                )
+            );
+        }
+        else {
+            ageKey = ageKeyDocument.getBinary("_id");
+        }
+
         ENCRYPTED_FIELDS_MAP = new BsonDocument().append("fields",
                 new BsonArray(Arrays.asList(
                         new BsonDocument()
-                                .append("keyId", DATA_KEY_SSN)
+                                .append("keyId", ssnKey)
                                 .append("path", new BsonString("ssn"))
                                 .append("bsonType", new BsonString("string"))
                                 .append("queries", new BsonDocument()
                                         .append("queryType", new BsonString("equality"))),
                         new BsonDocument()
-                                .append("keyId", DATA_KEY_AGE)
+                                .append("keyId", ageKey)
                                 .append("path", new BsonString("age"))
                                 .append("bsonType", new BsonString("int"))
                                 .append("queries", new BsonDocument()

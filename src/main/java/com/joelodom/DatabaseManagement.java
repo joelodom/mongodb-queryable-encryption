@@ -28,33 +28,31 @@ import com.mongodb.client.vault.ClientEncryptions;
 public class DatabaseManagement {
 
     private static final MongoClient ENCRYPTED_MONGO_CLIENT;
-    public static final ClientEncryption CLIENT_ENCRYPTION;
     private static final Map<String, Object> EXTRA_OPTIONS = new HashMap<>();
 
-    //public static final BsonBinary DATA_KEY_1, DATA_KEY_2;  TODO delete if unneeded
+    /**
+     * A client encryption object is a helper object that allows you to do
+     * various things such as some data key management and creating
+     * encrypted collections. We set that up here and use it in other
+     * places, too.
+     */
+
+    public static final ClientEncryption CLIENT_ENCRYPTION
+        = ClientEncryptions.create(ClientEncryptionSettings.builder()
+            .keyVaultMongoClientSettings(MongoClientSettings.builder()
+                .applyConnectionString(
+                    new ConnectionString(Env.MONGODB_URI)).build())
+            .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
+            .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
+            .build());
+
     static {
         /**
-         * See the README which discusses the crypt_shared library.
+         * See the README which discusses the crypt_shared library. This is
+         * really good to understand.
          */
 
         EXTRA_OPTIONS.put("cryptSharedLibPath", Env.SHARED_LIB_PATH);
-
-        /**
-         * A client encryption object is a helper object that allows you to do
-         * various things such as some data key management and creating
-         * encrypted collections. We set that up here and use it in other
-         * places, too.
-         */
-        ClientEncryptionSettings clientEncryptionSettings
-                = ClientEncryptionSettings.builder()
-                        .keyVaultMongoClientSettings(MongoClientSettings.builder()
-                                .applyConnectionString(
-                                        new ConnectionString(Env.MONGODB_URI)).build())
-                        .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
-                        .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
-                        .build();
-
-        CLIENT_ENCRYPTION = ClientEncryptions.create(clientEncryptionSettings);
 
         /**
          * Automatic encryption is a QE feature that allows you to insert into
@@ -73,7 +71,6 @@ public class DatabaseManagement {
          * perform the automatic encryption during the session.
          *
          * TODO: Work on client schema map and discussion. Review this comment.
-         *
          */
 
         Map<String, BsonDocument> clientSchemaMap = new HashMap<>();
