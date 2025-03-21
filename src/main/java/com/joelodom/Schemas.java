@@ -3,10 +3,12 @@ package com.joelodom;
 import java.util.Arrays;
 
 import org.bson.BsonArray;
+import org.bson.BsonBinary;
 import org.bson.BsonDocument;
 import org.bson.BsonInt32;
-import org.bson.BsonNull;
 import org.bson.BsonString;
+
+import com.mongodb.client.model.vault.DataKeyOptions;
 
 public class Schemas {
 
@@ -51,17 +53,24 @@ public class Schemas {
     
     public static final BsonDocument ENCRYPTED_FIELDS_MAP;
 
+    private static final BsonBinary DATA_KEY_SSN
+        = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
+            "local", new DataKeyOptions());
+    private static final BsonBinary DATA_KEY_AGE
+        = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
+            "local", new DataKeyOptions());
+
     static {
         ENCRYPTED_FIELDS_MAP = new BsonDocument().append("fields",
                 new BsonArray(Arrays.asList(
                         new BsonDocument()
-                                .append("keyId", new BsonNull())
+                                .append("keyId", DATA_KEY_SSN)
                                 .append("path", new BsonString("ssn"))
                                 .append("bsonType", new BsonString("string"))
                                 .append("queries", new BsonDocument()
                                         .append("queryType", new BsonString("equality"))),
                         new BsonDocument()
-                                .append("keyId", new BsonNull())
+                                .append("keyId", DATA_KEY_AGE)
                                 .append("path", new BsonString("age"))
                                 .append("bsonType", new BsonString("int"))
                                 .append("queries", new BsonDocument()
