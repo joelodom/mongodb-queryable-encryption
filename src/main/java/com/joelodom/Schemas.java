@@ -67,7 +67,7 @@ public class Schemas {
         BsonDocument ssnKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
             .getKeyByAltName("ssnKey");
         BsonDocument ageKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
-            .getKeyByAltName("ssnKey");
+            .getKeyByAltName("ageKey");
 
         if (ssnKeyDocument == null) {
             ssnKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(

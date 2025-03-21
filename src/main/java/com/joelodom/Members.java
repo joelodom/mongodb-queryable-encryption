@@ -7,7 +7,6 @@ import org.bson.BsonDocument;
 import org.bson.BsonInt32;
 import org.bson.BsonString;
 import org.bson.Document;
-import org.bson.json.JsonWriterSettings;
 
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -20,9 +19,6 @@ public class Members {
      * You can only insert so many records at once, so we do this in batches.
      */
     private final static int BATCH_SIZE = 200; // estimated to be okay
-
-    private final static JsonWriterSettings JSON_WRITER_SETTINGS
-            = JsonWriterSettings.builder().indent(true).build();
 
     /**
      * This function adds random members to the encrypted collection. The
@@ -95,7 +91,7 @@ public class Members {
             return;
         }
 
-        System.out.println(doc.toJson(JSON_WRITER_SETTINGS));
+        System.out.println(Utils.docToPrettyJSON(doc));
     }
 
     public static void printFindResults(FindIterable<Document> it) {

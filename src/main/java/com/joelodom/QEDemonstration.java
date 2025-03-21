@@ -6,7 +6,6 @@ import java.time.Instant;
 import java.util.Scanner;
 
 import org.bson.Document;
-import org.bson.json.JsonWriterSettings;
 
 /**
  * See the README.md for documentation about the overall demonstration.
@@ -105,10 +104,6 @@ public class QEDemonstration {
     }
 
     private static void printStatus() {
-        JsonWriterSettings jsonWriterSettings = JsonWriterSettings.builder()
-            .indent(true)
-            .build();
-            
         System.out.println("Status:");
         System.out.println();
 
@@ -123,13 +118,13 @@ public class QEDemonstration {
         System.out.println();
 
         System.out.println("Encrypted fields map:");
-        System.out.println(Schemas.ENCRYPTED_FIELDS_MAP.toJson(jsonWriterSettings));
+        System.out.println(Utils.docToPrettyJSON(Schemas.ENCRYPTED_FIELDS_MAP));
         System.out.println();
 
         System.out.println("Collection info:");
         System.out.println();
         for (Document c: DatabaseManagement.getDatabase().listCollections()) {
-            System.out.println(c.toJson(jsonWriterSettings));
+            System.out.println(Utils.docToPrettyJSON(c));
         }
     }
 
