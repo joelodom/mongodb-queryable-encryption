@@ -28,7 +28,7 @@ public class Schemas {
             {
             "fields": [
                 {
-                "keyId": null,
+                "keyId": <key id (null will create a key for you)>,
                 "path": "ssn",
                 "bsonType": "string",
                 "queries": {
@@ -36,7 +36,7 @@ public class Schemas {
                 }
                 },
                 {
-                "keyId": null,
+                "keyId": <key id (null will create a key for you)>,
                 "path": "age",
                 "bsonType": "int",
                 "queries": {
@@ -54,15 +54,19 @@ public class Schemas {
     public static final BsonDocument ENCRYPTED_FIELDS_MAP;
 
     /**
-     * We can send null for data key ids and they will be generated on the server,
-     * but if you're using server- and client-side schema enforcement, it's
-     * better just to generate them explicitly as part of the schema.
-     * 
-     * The schema is pulled from the server after the collection is created,
-     * so the same data keys are reused. TODO: rationalize this with client-side and generally update this comment
+     * Generating the encrypted fields map is done with more gymnastics than
+     * need be. This is because I want to demonstrate client- and server-side
+     * schema maps for encryption. See the README and the comments below.
      */
 
     static {
+        /**
+         * If we just want the keys to be created for us and laid down as part
+         * of a server-side schema map, we could pass BsonNull values for
+         * KeyId and it would be easy. But for client-side schemas I need
+         * to get the key id from the server.
+         */
+
         BsonBinary ssnKey, ageKey;
         BsonDocument ssnKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
             .getKeyByAltName("ssnKey");
@@ -90,6 +94,12 @@ public class Schemas {
         else {
             ageKey = ageKeyDocument.getBinary("_id");
         }
+
+        /**
+         * Now after all that hassle, we have the KeyIds. Again, the easy way
+         * to do this is to just pass BsonNull and we'd only need the map
+         * below. But for client-side schema validation we need the keys.
+         */
 
         ENCRYPTED_FIELDS_MAP = new BsonDocument().append("fields",
                 new BsonArray(Arrays.asList(

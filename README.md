@@ -123,6 +123,23 @@ I've been using this project to try out some things that are more advanced than
 the demonstration documented above. I'll talk about some of those here. Keep
 in mind that these things may void your warranty.
 
+### Client- vs. server-side schema enforcement
+
+Queryabe Encryption offers two types of schema validation, on the server and
+on the client. Most MongoDB users prefer server-side validation because it
+will present an error if a client application bug ever causes plaintext data
+to be sent when the data should be encrypted.
+
+But client-side validation is nice because it prevents a malicious database
+administrator from changing the underlying schema and possibly causing
+plaintext data to be sent from a client (this is scenario dependent, but is a
+real concern). By having both kinds of validation you get the best of both
+worlds.
+
+The trick is that you have to synchronize the data key ids. This requires some
+minor but managable gymnastics. See `Schemas.java`. To get both in this
+demonstration, you have to create the encrypted collection before anything else.
+
 ### Secret commands
 
 I'm not going to document all of the secret commands here, but take a peek at

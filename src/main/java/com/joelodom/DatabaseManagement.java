@@ -25,6 +25,7 @@ import com.mongodb.client.vault.ClientEncryptions;
  * This is the database management class. It acts as a static class and is used
  * to do things like create the database with the encrypted collection.
  */
+
 public class DatabaseManagement {
 
     private static final MongoClient ENCRYPTED_MONGO_CLIENT;
@@ -60,17 +61,22 @@ public class DatabaseManagement {
          * encrypt every time. The encryption and decryption become transparent
          * to your client.
          *
+         * The AutoEncryptionSettings object sets up automatic encryption and is
+         * applied to the MongoClientSettings so that your MongoClient can
+         * perform the automatic encryption during the session.
+         *
          * When you're using server-side schema validation, if you try to insert
          * into the database without encryption (maybe something in the code
          * changes accidentally and the client omits the automatic encryption),
          * you will see an error alerting you that the field that was supposed
          * to be encrypted wasn't.
          *
-         * The AutoEncryptionSettings object sets up automatic encryption and is
-         * applied to the MongoClientSettings so that your Mongo Client can
-         * perform the automatic encryption during the session.
-         *
-         * TODO: Work on client schema map and discussion. Review this comment.
+         * When you're using client-side schema validation, if the schema
+         * changes on the server (imagine a malicious DBA), the mismatch
+         * will avoid the sending of unencrypted data.
+         * 
+         * This example demonstrates client- and server-side schemas, or at
+         * least it can. See the README.
          */
 
         Map<String, BsonDocument> clientSchemaMap = new HashMap<>();
@@ -141,12 +147,8 @@ public class DatabaseManagement {
      * database. If you don't drop the key vault database it's not the end of
      * the world, but it wouldn't be helpful anymore and could grow with useless
      * keys if you rerun the demonstration.
-     *
-     *
-     * TODO: test Can we add "undork dropCollection for QE collections to the
-     * backlog? If you run a drop collection command on a QE collection outside
-     * an encrypted session, it really screws things up.
      */
+
     public static void destroyDatabase() {
         getDatabase().drop();
         getKeyVault().drop();
@@ -207,59 +209,4 @@ public class DatabaseManagement {
         //     "Dropped " + Env.COLLECTION_NAME + " WITHOUT encrypted client.");
         System.out.println();
     }
-
-    // /**
-    //  * Server-side enforcement of the encryption schema is nice because it
-    //  * prevents mistakes that would otherwise allow the server to store
-    //  * unencrypted data. The nice thing about client-side enforcement is that it
-    //  * prevents a malicious server admin from changing the schema undetected.
-    //  * 
-    //  * Normally you'd enable one or the other on an encrypted collection. But
-    //  * you can enable both. The trick is that the client-side schema has to have
-    //  * the same key IDs as the server-side schema, which is why we have to
-    //  * lay down the encrypted collection on the server first then use the
-    //  * minor gymnastics in Schemas.getEncryptedFieldsMapWithKeyIds to get the
-    //  * Key IDs.
-    //  */
-
-    // public static void enableClientEnforcement() {
-    //     // Get the encrypted fields map that contains the key IDs
-
-    //     BsonDocument encryptedFieldsMap
-    //         = Schemas.getEncryptedFieldsMapWithKeyIds();
-
-    //     if (encryptedFieldsMap == null) {
-    //         System.out.println(
-    //             "Unable to extract the client fields map with KeyIds");
-    //         System.out.println();
-    //         return;
-    //     }
-
-    //     // Create a client schema map from the schema
-        
-    //     Map<String, BsonDocument> clientSchemaMap = new HashMap<>();
-    //     clientSchemaMap.put(Env.DATABASE_NAME + "." + Env.COLLECTION_NAME,
-    //         encryptedFieldsMap);
-
-    //     // Go through the same process described above to re-create the
-    //     // client, but now with the client schema map
-
-    //     AutoEncryptionSettings autoEncryptionSettings
-    //         = AutoEncryptionSettings.builder()
-    //             .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
-    //             .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
-    //             .extraOptions(EXTRA_OPTIONS)
-    //             .encryptedFieldsMap(clientSchemaMap)
-    //             .build();
-
-    //     MongoClientSettings clientSettings = MongoClientSettings.builder()
-    //             .applyConnectionString(new ConnectionString(Env.MONGODB_URI))
-    //             .autoEncryptionSettings(autoEncryptionSettings)
-    //             .build();
-
-    //     ENCRYPTED_MONGO_CLIENT = MongoClients.create(clientSettings);
-
-    //     System.out.println("The client now has a client-side schema map.");
-    //     System.out.println();
-    // }
 }

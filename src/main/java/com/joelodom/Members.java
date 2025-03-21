@@ -25,15 +25,12 @@ public class Members {
      * encryption is transparent to the function because of the encrypted schema
      * map.
      */
+
     public static void addRandomMembers(int number) {
         /**
          * First we create a document with an encrypted SSN and an encrypted
          * age. SSN is equality searchable and age is range searchable. Other
          * fields are unencrypted.
-         *
-         * TODO: Error if the database doesn't exist or it will create a
-         * collection that doesn't have an encryption schema. Or add client-side
-         * schema enforcement.
          */
 
         MongoCollection collection = DatabaseManagement.getEncryptedCollection();
