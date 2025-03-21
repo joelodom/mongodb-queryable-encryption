@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.bson.BsonDocument;
 import org.bson.Document;
 
 import com.mongodb.AutoEncryptionSettings;
@@ -74,11 +75,16 @@ public class DatabaseManagement {
          * TODO: Work on client schema map and discussion. Review this comment.
          *
          */
+
+        Map<String, BsonDocument> clientSchemaMap = new HashMap<>();
+        clientSchemaMap.put(Env.DATABASE_NAME + "." + Env.COLLECTION_NAME,
+            Schemas.ENCRYPTED_FIELDS_MAP);
+
         AutoEncryptionSettings autoEncryptionSettings = AutoEncryptionSettings.builder()
                 .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
                 .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
                 .extraOptions(EXTRA_OPTIONS)
-                //.encryptedFieldsMap(clientSchemaMap)  TODO
+                .encryptedFieldsMap(clientSchemaMap)
                 .build();
 
         MongoClientSettings clientSettings = MongoClientSettings.builder()

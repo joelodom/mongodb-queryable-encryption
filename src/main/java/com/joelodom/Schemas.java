@@ -53,6 +53,15 @@ public class Schemas {
     
     public static final BsonDocument ENCRYPTED_FIELDS_MAP;
 
+    /**
+     * We can send null for data key ids and they will be generated on the server,
+     * but if you're using server- and client-side schema enforcement, it's
+     * better just to generate them explicitly as part of the schema.
+     * 
+     * The schema is pulled from the server after the collection is created,
+     * so the same data keys are reused. TODO: rationalize this with client-side
+     */
+
     private static final BsonBinary DATA_KEY_SSN
         = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
             "local", new DataKeyOptions());
