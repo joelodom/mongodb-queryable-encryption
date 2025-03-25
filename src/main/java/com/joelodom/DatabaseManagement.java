@@ -87,7 +87,7 @@ public class DatabaseManagement {
                 .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
                 .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
                 .extraOptions(EXTRA_OPTIONS)
-                .encryptedFieldsMap(clientSchemaMap)
+                //.encryptedFieldsMap(clientSchemaMap)
                 .build();
 
         MongoClientSettings clientSettings = MongoClientSettings.builder()
