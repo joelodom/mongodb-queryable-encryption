@@ -6,6 +6,7 @@ import org.bson.BsonArray;
 import org.bson.BsonBinary;
 import org.bson.BsonDocument;
 import org.bson.BsonInt32;
+import org.bson.BsonNull;
 import org.bson.BsonString;
 
 import com.mongodb.client.model.vault.DataKeyOptions;
@@ -96,6 +97,11 @@ public class Schemas {
         }
 
         /**
+         * Something is no longer working with client-side schemas. TO INVESTIGATE.
+         * TODO
+         */
+
+        /**
          * Now after all that hassle, we have the KeyIds. Again, the easy way
          * to do this is to just pass BsonNull and we'd only need the map
          * below. But for client-side schema validation we need the keys.
@@ -104,13 +110,13 @@ public class Schemas {
         ENCRYPTED_FIELDS_MAP = new BsonDocument().append("fields",
                 new BsonArray(Arrays.asList(
                         new BsonDocument()
-                                .append("keyId", ssnKey)
+                                .append("keyId", new BsonNull())   // TODO ssnKey)
                                 .append("path", new BsonString("ssn"))
                                 .append("bsonType", new BsonString("string"))
                                 .append("queries", new BsonDocument()
                                         .append("queryType", new BsonString("equality"))),
                         new BsonDocument()
-                                .append("keyId", ageKey)
+                                .append("keyId", new BsonNull())   // TODO ageKey)
                                 .append("path", new BsonString("age"))
                                 .append("bsonType", new BsonString("int"))
                                 .append("queries", new BsonDocument()
