@@ -15,8 +15,8 @@ import com.mongodb.client.result.InsertManyResult;
  * This is to demonstrate how $lookup and QE behave together.
  * Comments are inline.
  * 
- * TODO: Reference new documentation here and NOTE THAT THIS WILL NOT WORK
- * PRE-MONGODB-8.1.
+ * TODO: Reference new documentation here and note THIS WILL NOT WORK
+ * pre MongoDB 8.1 and Java driver 5.4.0. You'll also need crypt-shared 8.1+.
  */
 
 public final class LookupDemonstration {
@@ -83,17 +83,29 @@ public final class LookupDemonstration {
                 .append("as", "memberInfo")
         );
 
+        // Unwind
+        Document unwindStage = new Document("$unwind",
+            new Document("path", "$memberInfo"));
+
+        // Project out metadata
+        Document projectStage = new Document("$project",
+            new Document("_id", 0)
+            .append("memberInfo._id", 0)
+            .append("memberInfo.__safeContent__", 0)
+        );
+
         // Run the aggregation pipeline
         AggregateIterable<Document> results = locationsCollection.aggregate(
-            Arrays.asList(lookupStage));
+            Arrays.asList(lookupStage, unwindStage, projectStage));
 
         // Iterate through and print each resulting document
+        int count = 0;
         for (Document doc : results) {
-            System.out.println(doc.toJson());
+            System.out.println(Utils.docToPrettyJSON(doc));
+            ++count;
         }
 
-
-
+        System.out.println("$lookup returned " + count + " documents.");
         System.out.println();
     }
 }
