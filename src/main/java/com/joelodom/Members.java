@@ -76,6 +76,7 @@ public class Members {
          * __safeContent__, which is encrypted metadata used for encrypted
          * queries and is not meant to be used directly.
          */
+        
         MongoCollection<Document> collection
                 = DatabaseManagement.getEncryptedCollection();
         return collection.find(filter)
@@ -123,14 +124,15 @@ public class Members {
 
     public static void compoundFilter(int age, String ssn) {
         /**
-         *
+         * Example:
+         * 
          * {
-         * "$and": [ { "age": { "$lte": 31 } }, { "ssn": { "$eq": "123-45-6789"
+         * "$and": [ { "age": { "$gte": 31 } }, { "ssn": { "$eq": "123-45-6789"
          * } } ] }
          */
 
         BsonDocument query = new BsonDocument(
-                "age", new BsonDocument("$lte", new BsonInt32(age)))
+                "age", new BsonDocument("$gte", new BsonInt32(age)))
                 .append("ssn", new BsonString(ssn));
         printFindResults(find(query));
     }

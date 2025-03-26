@@ -12,8 +12,8 @@ public final class Strings {
 Welcome to the Queryable Encryption demonstration by Joel Odom. Please
 see the README.md file.
 
-This application simulates a simple call center application. Imagine that you
-own a gym and you have members that you need to manage.
+This application simulates a simple gym membership management application.
+Imagine that you own a gym and you have members that you need to manage.
 
 Type "help" to see available commands. It isn't very forgiving if you make a
 mistake because it's a demonstration. Sorry about that.
@@ -30,5 +30,6 @@ mistake because it's a demonstration. Sorry about that.
   find-one              Query for one member record (semi-randomly).
   no-ssn-query          Query for members who don't have an SSN on file.
   age-query [age]       Query for members who are [age] or younger.
+  compound-query        Query for members who are 18+ with no SSN on file.
 """;
 }

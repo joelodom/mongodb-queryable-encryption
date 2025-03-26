@@ -72,6 +72,7 @@ First type `help`. This will show you these commands:
   find-one              Query for one member record (semi-randomly).
   no-ssn-query          Query for members who don't have an SSN on file.
   age-query [age]       Query for members who are [age] or younger.
+  compound-query        Query for members who are 18+ with no SSN on file.
 ```
 
 Here is my demonstration flow:

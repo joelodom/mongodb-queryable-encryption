@@ -11,8 +11,16 @@ import java.util.Map;
  * demonstration because it's just a demonstration. That said, a local key
  * provider may be useful in some production applications, such as injecting a
  * key via an environment variable or via a sidecar process.
+ * 
+ * ENHANCEMENTS:
+ * 
+ *   Demonstrate key rotation
+ *   Demonstrate multiple providers (including cloud providers)
+ *   Demonstrate changing providers
+ *   Demonstrate key refresh interval change
  *
  */
+
 public class KeyManagement {
 
     /**

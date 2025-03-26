@@ -77,12 +77,12 @@ public class QEDemonstration {
             case "find-one" -> Members.findOne();
             case "no-ssn-query" -> Members.findBySSN(RandomData.NO_SSN);
             case "age-query" -> Members.findByAge(Integer.parseInt(noun));
+            case "compound-query" -> Members.compoundFilter(18, "000-00-0000");
 
             /**
              * Secret commands for those reading the code who want to go deeper.
              */
 
-            case "compound-query" -> Members.compoundFilter(21, "000-00-0000");
             case "destroy-all-databases" -> DatabaseManagement.destroyAllDatabases();
             case "drop-collection" -> DatabaseManagement.dropCollection();
             case "lookup-demonstration" -> LookupDemonstration.lookupDemonstration();

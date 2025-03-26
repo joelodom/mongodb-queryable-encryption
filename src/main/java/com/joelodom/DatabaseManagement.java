@@ -195,6 +195,7 @@ public class DatabaseManagement {
      * Normally the MongoDB Atlas UI and Compass will hide these metadata
      * collections, but I use mongosh to see them.
      */
+    
     public static void dropCollection() {
         // I have affirmed this drops the aux collections
         getEncryptedCollection().drop();

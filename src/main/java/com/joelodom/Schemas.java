@@ -97,11 +97,6 @@ public class Schemas {
         }
 
         /**
-         * Something is no longer working with client-side schemas. TO INVESTIGATE.
-         * TODO
-         */
-
-        /**
          * Now after all that hassle, we have the KeyIds. Again, the easy way
          * to do this is to just pass BsonNull and we'd only need the map
          * below. But for client-side schema validation we need the keys.
