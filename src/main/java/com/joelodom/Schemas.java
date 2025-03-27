@@ -6,10 +6,7 @@ import org.bson.BsonArray;
 import org.bson.BsonBinary;
 import org.bson.BsonDocument;
 import org.bson.BsonInt32;
-import org.bson.BsonNull;
 import org.bson.BsonString;
-
-import com.mongodb.client.model.vault.DataKeyOptions;
 
 public class Schemas {
 
@@ -68,33 +65,33 @@ public class Schemas {
          * to get the key id from the server.
          */
 
-        BsonBinary ssnKey, ageKey;
-        BsonDocument ssnKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
-            .getKeyByAltName("ssnKey");
-        BsonDocument ageKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
-            .getKeyByAltName("ageKey");
+        // BsonBinary ssnKey, ageKey;
+        // BsonDocument ssnKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
+        //     .getKeyByAltName("ssnKey");
+        // BsonDocument ageKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
+        //     .getKeyByAltName("ageKey");
 
-        if (ssnKeyDocument == null) {
-            ssnKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
-                "local", new DataKeyOptions().keyAltNames(
-                    Arrays.asList("ssnKey")
-                )
-            );
-        }
-        else {
-            ssnKey = ssnKeyDocument.getBinary("_id");
-        }
+        // if (ssnKeyDocument == null) {
+        //     ssnKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
+        //         "local", new DataKeyOptions().keyAltNames(
+        //             Arrays.asList("ssnKey")
+        //         )
+        //     );
+        // }
+        // else {
+        //     ssnKey = ssnKeyDocument.getBinary("_id");
+        // }
 
-        if (ageKeyDocument == null) {
-            ageKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
-                "local", new DataKeyOptions().keyAltNames(
-                    Arrays.asList("ageKey")
-                )
-            );
-        }
-        else {
-            ageKey = ageKeyDocument.getBinary("_id");
-        }
+        // if (ageKeyDocument == null) {
+        //     ageKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
+        //         "local", new DataKeyOptions().keyAltNames(
+        //             Arrays.asList("ageKey")
+        //         )
+        //     );
+        // }
+        // else {
+        //     ageKey = ageKeyDocument.getBinary("_id");
+        // }
 
         /**
          * Now after all that hassle, we have the KeyIds. Again, the easy way
@@ -102,16 +99,22 @@ public class Schemas {
          * below. But for client-side schema validation we need the keys.
          */
 
+        final BsonBinary DATA_KEY_1
+            = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey("local");
+
+        final BsonBinary DATA_KEY_2
+            = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey("local");
+
         ENCRYPTED_FIELDS_MAP = new BsonDocument().append("fields",
                 new BsonArray(Arrays.asList(
                         new BsonDocument()
-                                .append("keyId", new BsonNull())   // TODO ssnKey)
+                                .append("keyId", DATA_KEY_1)
                                 .append("path", new BsonString("ssn"))
                                 .append("bsonType", new BsonString("string"))
                                 .append("queries", new BsonDocument()
                                         .append("queryType", new BsonString("equality"))),
                         new BsonDocument()
-                                .append("keyId", new BsonNull())   // TODO ageKey)
+                                .append("keyId", DATA_KEY_2)
                                 .append("path", new BsonString("age"))
                                 .append("bsonType", new BsonString("int"))
                                 .append("queries", new BsonDocument()
