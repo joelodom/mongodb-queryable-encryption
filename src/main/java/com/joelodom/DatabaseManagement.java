@@ -1,5 +1,6 @@
 package com.joelodom;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -11,6 +12,7 @@ import com.mongodb.AutoEncryptionSettings;
 import com.mongodb.ClientEncryptionSettings;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -231,14 +233,6 @@ public class DatabaseManagement {
         printCollectionSizes();
     }
 
-    private static final MongoClient UNENCRYPTED_MONGO_CLIENT
-        = MongoClients.create(MongoClientSettings.builder()
-                .applyConnectionString(new ConnectionString(Env.MONGODB_URI))
-                .build());
-
-    /**
-     * Prints the size of the encrypted collection and its metadata collections.
-     */
     public static void printCollectionSizes() {
         printCollectionSize(Env.COLLECTION_NAME);
         printCollectionSize("enxcol_." + Env.COLLECTION_NAME + ".esc");
@@ -247,11 +241,25 @@ public class DatabaseManagement {
     }
 
     public static void printCollectionSize(String collectionName) {
-        // collStats doesn't work with an encrypted client
-        Document stats = UNENCRYPTED_MONGO_CLIENT.getDatabase(Env.DATABASE_NAME)
-            .runCommand(new Document("collStats", collectionName));
-        Number dataSizeInBytes = stats.get("size", Number.class);
-        double dataSizeInKB = dataSizeInBytes.doubleValue() / 1024.0;
+        /**
+         * This is the way post-6.2 to get collection stats
+         */
+
+        AggregateIterable<Document> stats = getDatabase()
+            .getCollection(collectionName).aggregate(
+                Arrays.asList(new Document("$collStats",
+                new Document("storageStats", new Document())))
+        );
+
+        Document doc = stats.first();
+        if (doc == null) {
+            System.out.println("Could not get collection stats.");
+            return;
+        }
+
+        Number dataSizeInBytes = doc.get(
+            "storageStats", Document.class).get("size", Number.class);
+        int dataSizeInKB = (int)(dataSizeInBytes.doubleValue() / 1024.0);
         System.out.println(
             "Size of " + collectionName + ": " + dataSizeInKB + " KB");
     }
