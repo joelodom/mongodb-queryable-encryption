@@ -73,6 +73,7 @@ First type `help`. This will show you these commands:
   no-ssn-query          Query for members who don't have an SSN on file.
   age-query [age]       Query for members who are [age] or younger.
   compound-query        Query for members who are 18+ with no SSN on file.
+  compact-collection    Compacts the encrypted metadata.
 ```
 
 Here is my demonstration flow:
@@ -96,6 +97,8 @@ it looks like decrypted.
 5. Use `no-ssn-query` to demonstrate an equality query on encrypted data.
 
 6. Use `age-query` to demonstrate a range query on encrypted data.
+
+7. Use `compound-query` to demonstrate a compound query.
 
 This demo is underwhelming right now. More enhancements are coming, but it's a
 place to start.

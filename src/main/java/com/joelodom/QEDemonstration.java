@@ -78,6 +78,7 @@ public class QEDemonstration {
             case "no-ssn-query" -> Members.findBySSN(RandomData.NO_SSN);
             case "age-query" -> Members.findByAge(Integer.parseInt(noun));
             case "compound-query" -> Members.compoundFilter(18, "000-00-0000");
+            case "compact-collection" -> DatabaseManagement.compactCollection();
 
             /**
              * Secret commands for those reading the code who want to go deeper.

@@ -31,5 +31,6 @@ mistake because it's a demonstration. Sorry about that.
   no-ssn-query          Query for members who don't have an SSN on file.
   age-query [age]       Query for members who are [age] or younger.
   compound-query        Query for members who are 18+ with no SSN on file.
+  compact-collection    Compacts the encrypted metadata.
 """;
 }

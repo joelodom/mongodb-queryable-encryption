@@ -210,4 +210,49 @@ public class DatabaseManagement {
         //     "Dropped " + Env.COLLECTION_NAME + " WITHOUT encrypted client.");
         System.out.println();
     }
+
+    /**
+     * Encrypted metadata grows in the database when records are inserted. To
+     * save space, we have a compaction algorithm.
+     * 
+     * See
+     * https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/manage-collections/#metadata-collection-compaction
+     */
+
+    public static void compactCollection() {
+        System.out.println("Before Compaction");
+        printCollectionSizes();
+
+        Document command = new Document(
+            "compactStructuredEncryptionData", Env.COLLECTION_NAME);
+        Document result = getDatabase().runCommand(command);
+
+        System.out.println("After Compaction");
+        printCollectionSizes();
+    }
+
+    private static final MongoClient UNENCRYPTED_MONGO_CLIENT
+        = MongoClients.create(MongoClientSettings.builder()
+                .applyConnectionString(new ConnectionString(Env.MONGODB_URI))
+                .build());
+
+    /**
+     * Prints the size of the encrypted collection and its metadata collections.
+     */
+    public static void printCollectionSizes() {
+        printCollectionSize(Env.COLLECTION_NAME);
+        printCollectionSize("enxcol_." + Env.COLLECTION_NAME + ".esc");
+        printCollectionSize("enxcol_." + Env.COLLECTION_NAME + ".ecoc");
+        System.out.println();
+    }
+
+    public static void printCollectionSize(String collectionName) {
+        // collStats doesn't work with an encrypted client
+        Document stats = UNENCRYPTED_MONGO_CLIENT.getDatabase(Env.DATABASE_NAME)
+            .runCommand(new Document("collStats", collectionName));
+        Number dataSizeInBytes = stats.get("size", Number.class);
+        double dataSizeInKB = dataSizeInBytes.doubleValue() / 1024.0;
+        System.out.println(
+            "Size of " + collectionName + ": " + dataSizeInKB + " KB");
+    }
 }
