@@ -26,8 +26,8 @@ I have added both of these to the included gradle file.
 To perform automatic encryption (not available in our Community Edition),
 you'll need the query analysis library, crypt_shared. See
 https://www.mongodb.com/docs/manual/core/queryable-encryption/install-library/.
-This library doesn't actually do any encryption, rather it does the query
-analysis required for automatic encryption and calls out to your OS for encryption.
+This library doesn't actually do any encryption, rather it does the parsing
+and query analysis required for automatic encryption.
 
 If you use this on MacOS and it's blocked by your security policy, try
 `xattr -d com.apple.quarantine ./mongo_crypt_v1.dylib`.
@@ -132,21 +132,17 @@ in mind that these things may void your warranty.
 Queryabe Encryption offers two types of schema validation, on the server and
 on the client. Most MongoDB users prefer server-side validation because it
 will present an error if a client application bug ever causes plaintext data
-to be sent to the server when the data should be encrypted.
+to be sent when the data should be encrypted.
 
 But client-side validation is nice because it prevents a malicious database
 administrator from changing the underlying schema and possibly causing
 plaintext data to be sent from a client (this is scenario dependent, but is a
 real concern). By having both kinds of validation you get the best of both
-worlds. AND -- importantly -- you shouldn't try to implement client-side
-schema validation alone because it may not be performant and you can't
-run compaction on the database if you do that. See
-https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/enable-qe/
+worlds.
 
-The trick is that you have to synchronize the data key ids between the server
-and the client. This requires some minor but managable gymnastics. See
-`Schemas.java`. To get both in this demonstration, you have to create the
-encrypted collection before anything else.
+The trick is that you have to synchronize the data key ids. This requires some
+minor but managable gymnastics. See `Schemas.java`. To get both in this
+demonstration, you have to create the encrypted collection before anything else.
 
 ### Secret commands
 
@@ -194,7 +190,7 @@ too.
 
 ### Advanced QE documentation
 
-* MongoDB Client-Side Encryption Specification: https://github.com/mongodb/specifications/blob/89e91523b58e9de06d45da9329d3d2595307557c/source/client-side-encryption/client-side-encryption.md#clientencryption
+* MongoDB Client-Side Encryption API Specification (applies to _both_ Queryable Encryption and Client-Side Field Level Encryption) - this is primarily intended as a resource for low-level drivers developers, but might be useful: [https://github.com/mongodb/specifications/blob/89e91523b58e9de06d45da9329d3d2595307557c/source/client-side-encryption/client-side-encryption.md#clientencryption](https://github.com/mongodb/specifications/blob/master/source/client-side-encryption/client-side-encryption.md#clientencryption)
 
-* Whitepapers published by the MongoDB Crypto Research Group: https://www.mongodb.com/company/research/cryptography-research-group
+* Peer-reviewed papers and whitepapers published by the MongoDB Cryptography Research Group: https://www.mongodb.com/company/research/cryptography-research-group
 
