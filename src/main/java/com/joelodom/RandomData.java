@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
+import org.bson.Document;
+
 /**
  * I won't document this utitily class in detail. It's just for creating random
  * data for demonstration purposes.
@@ -139,5 +141,13 @@ public class RandomData {
     public static String getRandomCity() {
         int index = ThreadLocalRandom.current().nextInt(CITIES.length);
         return CITIES[index];
+    }
+
+    public static Document createRandomMember() {
+        return new Document("name",
+                RandomData.generateRandomFullName())
+                .append("ssn", RandomData.generateRandomSSN())
+                .append("age", RandomData.generateRandomAge())
+                .append("zipCode", RandomData.generateRandomZipCode());
     }
 }

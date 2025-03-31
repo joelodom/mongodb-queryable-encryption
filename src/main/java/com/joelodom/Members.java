@@ -43,12 +43,7 @@ public class Members {
             List<Document> documents = new ArrayList<>(toInsert);
 
             while (documents.size() < toInsert) {
-                Document document = new Document("name",
-                        RandomData.generateRandomFullName())
-                        .append("ssn", RandomData.generateRandomSSN())
-                        .append("age", RandomData.generateRandomAge())
-                        .append("zipCode", RandomData.generateRandomZipCode());
-                documents.add(document);
+                documents.add(RandomData.createRandomMember());
             }
 
             InsertManyResult result = collection.insertMany(documents);
