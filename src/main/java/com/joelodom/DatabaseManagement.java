@@ -78,7 +78,9 @@ public class DatabaseManagement {
          * will avoid the sending of unencrypted data.
          * 
          * This example demonstrates client- and server-side schemas, or at
-         * least it can. See the README.
+         * least it can. See the README for more, especially about why you
+         * shouldn't try to implement client-side schemas alone, even if it
+         * kind of works.
          */
 
         Map<String, BsonDocument> clientSchemaMap = new HashMap<>();

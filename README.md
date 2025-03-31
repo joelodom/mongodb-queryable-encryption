@@ -132,17 +132,21 @@ in mind that these things may void your warranty.
 Queryabe Encryption offers two types of schema validation, on the server and
 on the client. Most MongoDB users prefer server-side validation because it
 will present an error if a client application bug ever causes plaintext data
-to be sent when the data should be encrypted.
+to be sent to the server when the data should be encrypted.
 
 But client-side validation is nice because it prevents a malicious database
 administrator from changing the underlying schema and possibly causing
 plaintext data to be sent from a client (this is scenario dependent, but is a
 real concern). By having both kinds of validation you get the best of both
-worlds.
+worlds. AND -- importantly -- you shouldn't try to implement client-side
+schema validation alone because it may not be performant and you can't
+run compaction on the database if you do that. See
+https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/enable-qe/
 
-The trick is that you have to synchronize the data key ids. This requires some
-minor but managable gymnastics. See `Schemas.java`. To get both in this
-demonstration, you have to create the encrypted collection before anything else.
+The trick is that you have to synchronize the data key ids between the server
+and the client. This requires some minor but managable gymnastics. See
+`Schemas.java`. To get both in this demonstration, you have to create the
+encrypted collection before anything else.
 
 ### Secret commands
 
