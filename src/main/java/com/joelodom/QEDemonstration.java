@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import org.bson.Document;
 
+import joelodom.com.ExplicitQE;
+
 /**
  * See the README.md for documentation about the overall demonstration.
  * There are lots of comments in the source code, but the README gives the
@@ -87,6 +89,15 @@ public class QEDemonstration {
             case "destroy-all-databases" -> DatabaseManagement.destroyAllDatabases();
             case "drop-collection" -> DatabaseManagement.dropCollection();
             case "lookup-demonstration" -> LookupDemonstration.lookupDemonstration();
+            case "add-members-explicit" -> {
+                if (noun == null) {
+                    System.out.println(
+                        "Please specify the number of members to add.");
+                    System.out.println();
+                } else {
+                    ExplicitQE.addRandomMembers(Integer.parseInt(noun));
+                }
+            }
 
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
