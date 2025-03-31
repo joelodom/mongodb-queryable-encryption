@@ -7,8 +7,6 @@ import java.util.Scanner;
 
 import org.bson.Document;
 
-import joelodom.com.ExplicitQE;
-
 /**
  * See the README.md for documentation about the overall demonstration.
  * There are lots of comments in the source code, but the README gives the

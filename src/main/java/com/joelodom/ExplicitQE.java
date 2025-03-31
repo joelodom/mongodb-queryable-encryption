@@ -1,4 +1,4 @@
-package joelodom.com;
+package com.joelodom;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,9 +8,10 @@ import org.bson.BsonInt32;
 import org.bson.BsonString;
 import org.bson.Document;
 
-import com.joelodom.DatabaseManagement;
-import com.joelodom.RandomData;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.vault.EncryptOptions;
 import com.mongodb.client.result.InsertManyResult;
 
@@ -31,9 +32,11 @@ public class ExplicitQE {
         Document member = RandomData.createRandomMember();
 
         BsonBinary encryptedSSN = DatabaseManagement.CLIENT_ENCRYPTION.encrypt(
-            member.get("ssn", BsonString.class), new EncryptOptions("Indexed"));
+            new BsonString(member.getString("ssn")),
+            new EncryptOptions("Indexed"));
         BsonBinary encryptedAge = DatabaseManagement.CLIENT_ENCRYPTION.encrypt(
-            member.get("age", BsonInt32.class), new EncryptOptions("Range"));
+            new BsonInt32(member.getInteger("age")),
+            new EncryptOptions("Range"));
 
         member.put("ssn", encryptedSSN);
         member.put("age", encryptedAge);
@@ -51,7 +54,9 @@ public class ExplicitQE {
          * TODO
          */
 
-        MongoCollection collection = null;
+        MongoClient unencryptedClient = MongoClients.create(Env.MONGODB_URI);
+        MongoDatabase db = unencryptedClient.getDatabase(Env.DATABASE_NAME);
+        MongoCollection collection = db.getCollection(Env.COLLECTION_NAME);
 
         int inserted = 0;
         while (inserted < number) {
