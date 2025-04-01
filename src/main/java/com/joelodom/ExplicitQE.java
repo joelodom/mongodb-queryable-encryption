@@ -20,8 +20,6 @@ import com.mongodb.client.model.vault.RangeOptions;
 import com.mongodb.client.result.InsertManyResult;
 
 /**
- * TODO: Documentation
- * 
  * See
  * https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/manual-encryption/
  */
@@ -29,7 +27,12 @@ import com.mongodb.client.result.InsertManyResult;
 public class ExplicitQE {
     
     /**
-     * TODO: Documentation
+     * We create a random member and we rewrite the parts of the JSON that
+     * should be encrypted. With explicit encryption we have to specify
+     * specific parameters, and they must be consistent across inserts.
+     * 
+     * To make this work right, you have to create the encrypted collection
+     * first.
      */
 
     public static Document createExplicitMember() {
@@ -50,8 +53,6 @@ public class ExplicitQE {
         member.put("ssn", encryptedSSN);
         member.put("age", encryptedAge);
 
-        //System.out.print(Utils.docToPrettyJSON(member));
-
         return member;
     }
 
@@ -62,9 +63,8 @@ public class ExplicitQE {
     
     public static void addRandomMembers(int number) {
         /**
-         * TODO
-         * 
-         * See
+         * For Queryable encryption we have to build a Mongo Client with
+         * encryption settings, but no automatic encryption schema. See
          * https://github.com/mongodb/specifications/blob/f3549601e6bdfe4f18568985dfe706ca500dc679/source/client-side-encryption/client-side-encryption.md#why-is-bypassqueryanalysis-needed
          * about why we need to use bypassQueryAnalysis here.
          */

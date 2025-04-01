@@ -64,7 +64,11 @@ public class QEDemonstration {
             case "help" -> printHelp();
             case "status" -> printStatus();
             case "create-collection" -> DatabaseManagement.createEncryptedCollection();
-            case "destroy-database" -> DatabaseManagement.destroyDatabase();
+            case "destroy-database" -> {
+                DatabaseManagement.destroyDatabase();
+                // Exit because we need to recreate keys (TODO, allow non-static creation)
+                System.exit(0);
+            }
             case "add-members" -> {
                 if (noun == null) {
                     System.out.println(
