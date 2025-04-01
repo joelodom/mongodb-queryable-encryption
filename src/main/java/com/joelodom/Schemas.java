@@ -19,10 +19,10 @@ public class Schemas {
      * One important note. For range queries it is HIGHLY RECOMMENDED that you
      * set min, max and precision. If you don't it'll cost way too much storage
      * overhead.
-     * 
+     *
      * See https://www.mongodb.com/docs/manual/core/queryable-encryption/qe-create-encryption-schema/
      * and https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/encrypt-and-query/#std-label-qe-field-configuration
-     * 
+     *
      * This schema map looks like this in JSON:
 
             {
@@ -48,9 +48,9 @@ public class Schemas {
             ]
             }
 
-     * 
+     *
      */
-    
+
     public static final BsonDocument ENCRYPTED_FIELDS_MAP;
 
     /**
@@ -58,6 +58,8 @@ public class Schemas {
      * need be. This is because I want to demonstrate client- and server-side
      * schema maps for encryption. See the README and the comments below.
      */
+
+    public static final BsonBinary ssnKey, ageKey;
 
     static {
         /**
@@ -67,17 +69,18 @@ public class Schemas {
          * to get the key id from the server.
          */
 
-        BsonBinary ssnKey, ageKey;
-        
+        final String SSN_KEY = "ssnKey";
+        final String AGE_KEY = "ageKey";
+
         BsonDocument ssnKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
-            .getKeyByAltName("ssnKey");
+            .getKeyByAltName(SSN_KEY);
         BsonDocument ageKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
-            .getKeyByAltName("ageKey");
+            .getKeyByAltName(AGE_KEY);
 
         if (ssnKeyDocument == null) {
             ssnKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
                 "local", new DataKeyOptions().keyAltNames(
-                    Arrays.asList("ssnKey")
+                    Arrays.asList(SSN_KEY)
                 )
             );
         }
@@ -88,7 +91,7 @@ public class Schemas {
         if (ageKeyDocument == null) {
             ageKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
                 "local", new DataKeyOptions().keyAltNames(
-                    Arrays.asList("ageKey")
+                    Arrays.asList(AGE_KEY)
                 )
             );
         }

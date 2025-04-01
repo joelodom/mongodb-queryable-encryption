@@ -13,6 +13,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.vault.EncryptOptions;
+import com.mongodb.client.model.vault.RangeOptions;
 import com.mongodb.client.result.InsertManyResult;
 
 /**
@@ -33,10 +34,15 @@ public class ExplicitQE {
 
         BsonBinary encryptedSSN = DatabaseManagement.CLIENT_ENCRYPTION.encrypt(
             new BsonString(member.getString("ssn")),
-            new EncryptOptions("Indexed"));
+            new EncryptOptions("Indexed").keyId(Schemas.ssnKey)
+                .contentionFactor(8L));
         BsonBinary encryptedAge = DatabaseManagement.CLIENT_ENCRYPTION.encrypt(
             new BsonInt32(member.getInteger("age")),
-            new EncryptOptions("Range"));
+            new EncryptOptions("Range").keyId(Schemas.ageKey)
+                .contentionFactor(8L)
+                .rangeOptions(new RangeOptions()
+                    .min(new BsonInt32(0))
+                    .max(new BsonInt32(RandomData.MAX_AGE))));
 
         member.put("ssn", encryptedSSN);
         member.put("age", encryptedAge);
