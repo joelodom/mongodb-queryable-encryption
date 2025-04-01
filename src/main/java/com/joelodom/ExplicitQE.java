@@ -8,6 +8,9 @@ import org.bson.BsonInt32;
 import org.bson.BsonString;
 import org.bson.Document;
 
+import com.mongodb.AutoEncryptionSettings;
+import com.mongodb.ConnectionString;
+import com.mongodb.MongoClientSettings;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
@@ -60,9 +63,21 @@ public class ExplicitQE {
     public static void addRandomMembers(int number) {
         /**
          * TODO
+         * 
+         * See
+         * https://github.com/mongodb/specifications/blob/f3549601e6bdfe4f18568985dfe706ca500dc679/source/client-side-encryption/client-side-encryption.md#why-is-bypassqueryanalysis-needed
+         * about why we need to use bypassQueryAnalysis here.
          */
 
-        MongoClient unencryptedClient = MongoClients.create(Env.MONGODB_URI);
+        MongoClientSettings clientSettings = MongoClientSettings.builder()
+            .applyConnectionString(new ConnectionString(Env.MONGODB_URI))
+            .autoEncryptionSettings(AutoEncryptionSettings.builder()
+                .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
+                .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
+                .bypassQueryAnalysis(true).build())
+        .build();
+
+        MongoClient unencryptedClient = MongoClients.create(clientSettings);
         MongoDatabase db = unencryptedClient.getDatabase(Env.DATABASE_NAME);
         MongoCollection collection = db.getCollection(Env.COLLECTION_NAME);
 
