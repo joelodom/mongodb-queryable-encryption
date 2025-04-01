@@ -47,6 +47,8 @@ public class ExplicitQE {
         member.put("ssn", encryptedSSN);
         member.put("age", encryptedAge);
 
+        //System.out.print(Utils.docToPrettyJSON(member));
+
         return member;
     }
 
