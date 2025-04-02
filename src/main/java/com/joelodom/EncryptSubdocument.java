@@ -13,7 +13,9 @@ import com.mongodb.client.model.CreateCollectionOptions;
 import com.mongodb.client.model.CreateEncryptedCollectionParams;
 
 /**
- * TODO: Document throughout
+ * This is a simple example of how you can encrypt a subdocument with
+ * Queryable Encryption. The subdocument is not queryable so "queries" is
+ * omitted from the encrypted fields map.
  */
 
 public class EncryptSubdocument {
