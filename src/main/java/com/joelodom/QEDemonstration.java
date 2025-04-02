@@ -100,6 +100,7 @@ public class QEDemonstration {
                     ExplicitQE.addRandomMembers(Integer.parseInt(noun));
                 }
             }
+            case "encrypt-subdocument" -> EncryptSubdocument.encryptSubdocument();
 
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
