@@ -143,6 +143,10 @@ worlds.
 The trick is that you have to synchronize the data key ids. This requires some
 minor but managable gymnastics. See `Schemas.java`. To get both in this
 demonstration, you have to create the encrypted collection before anything else.
+You shouldn't try to implement client-side schema validation alone because queries
+may not be performant and you can't run compaction on the database if you do
+that. See
+https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/enable-qe/
 
 ### Secret commands
 
