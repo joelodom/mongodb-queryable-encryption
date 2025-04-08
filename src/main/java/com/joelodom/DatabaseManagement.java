@@ -132,14 +132,15 @@ public class DatabaseManagement {
 
         /**
          * Here's where we create the collection. Remember we're just using a
-         * "local" key provider for this demonstration. Normally you would use a
-         * key vault.
+         * local key provider for this demonstration (unless you have found the
+         * secret way to use AWS). Normally you would use a key vault.
          */
+
         CLIENT_ENCRYPTION.createEncryptedCollection(
                 getDatabase(),
                 Env.COLLECTION_NAME,
                 createCollectionOptions,
-                new CreateEncryptedCollectionParams("local"));
+                new CreateEncryptedCollectionParams(Env.KEY_PROVIDER));
 
         System.out.println(
                 "Created encrypted collection, " + Env.COLLECTION_NAME + ".");

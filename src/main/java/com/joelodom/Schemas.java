@@ -62,6 +62,14 @@ public class Schemas {
     public static final BsonBinary ssnKey, ageKey;
 
     static {
+        /** TODO COMMENT
+        */
+
+        BsonDocument awsKey = new BsonDocument();
+        awsKey.put("provider", new BsonString(Env.KEY_PROVIDER));
+        awsKey.put("key", new BsonString(Env.AWS_KMS_KEY_ARN));
+        awsKey.put("region", new BsonString(Env.AWS_KMS_KEY_REGION));
+
         /**
          * If we just want the keys to be created for us and laid down as part
          * of a server-side schema map, we could pass BsonNull values for
@@ -78,22 +86,26 @@ public class Schemas {
             .getKeyByAltName(AGE_KEY);
 
         if (ssnKeyDocument == null) {
+            DataKeyOptions dataKeyOptions = new DataKeyOptions()
+                .keyAltNames(Arrays.asList(SSN_KEY));
+            if ("aws".equals(Env.KEY_PROVIDER)) {
+                dataKeyOptions.masterKey(awsKey);
+            }
             ssnKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
-                "local", new DataKeyOptions().keyAltNames(
-                    Arrays.asList(SSN_KEY)
-                )
-            );
+                Env.KEY_PROVIDER, dataKeyOptions);
         }
         else {
             ssnKey = ssnKeyDocument.getBinary("_id");
         }
 
         if (ageKeyDocument == null) {
+            DataKeyOptions dataKeyOptions = new DataKeyOptions()
+                .keyAltNames(Arrays.asList(AGE_KEY));
+            if ("aws".equals(Env.KEY_PROVIDER)) {
+                dataKeyOptions.masterKey(awsKey);
+            }
             ageKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
-                "local", new DataKeyOptions().keyAltNames(
-                    Arrays.asList(AGE_KEY)
-                )
-            );
+                Env.KEY_PROVIDER, dataKeyOptions);
         }
         else {
             ageKey = ageKeyDocument.getBinary("_id");

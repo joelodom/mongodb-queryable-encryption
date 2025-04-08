@@ -59,7 +59,7 @@ public class EncryptSubdocument {
                 db,
                 EncryptSubdocument.COLLECTION_NAME,
                 createCollectionOptions,
-                new CreateEncryptedCollectionParams("local"));
+                new CreateEncryptedCollectionParams(Env.KEY_PROVIDER));
 
         System.out.println(
                 "Created encrypted collection, " + EncryptSubdocument.COLLECTION_NAME + ".");

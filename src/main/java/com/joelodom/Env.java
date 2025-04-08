@@ -22,6 +22,13 @@ public class Env {
 
     public static boolean VOID_WARRANTY = false;
 
+    public static final String KEY_PROVIDER;
+
+    public static final String AWS_KMS_KEY_ARN;
+    public static final String AWS_KMS_KEY_REGION;
+    public static final String AWS_KMS_ACCESS_KEY_ID;
+    public static final String AWS_KMS_ACCESS_KEY_SECRET;
+
     static {
         Dotenv dotenv = Dotenv.load();
 
@@ -40,5 +47,12 @@ public class Env {
         if (voidWarranty != null) {
             VOID_WARRANTY = voidWarranty.equals("true");
         }
+
+        KEY_PROVIDER = dotenv.get("KEY_PROVIDER");
+
+        AWS_KMS_KEY_ARN = dotenv.get("AWS_KMS_KEY_ARN");
+        AWS_KMS_KEY_REGION = dotenv.get("AWS_KMS_KEY_REGION");
+        AWS_KMS_ACCESS_KEY_ID = dotenv.get("AWS_KMS_ACCESS_KEY_ID");
+        AWS_KMS_ACCESS_KEY_SECRET = dotenv.get("AWS_KMS_ACCESS_KEY_SECRET");
     }
 }

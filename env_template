@@ -38,3 +38,17 @@ COLLECTION_NAME="members"
 
 KEY_VAULT_DATABASE="demoKeyVault"
 KEY_VAULT_COLLECTION="__keyVault"
+
+#
+# One of the secret features of this demonstration is you can use AWS KMS.
+# See KeyManagement.java for more details. This current implementation
+# uses secrets-based access, but I need to demonstrate role-based access in a 
+# future version.
+#
+
+KEY_PROVIDER="local"  # change to "aws" to use AWS KMS
+
+AWS_KMS_KEY_ARN=""
+AWS_KMS_KEY_REGION=""
+AWS_KMS_ACCESS_KEY_ID=""
+AWS_KMS_ACCESS_KEY_SECRET=""
