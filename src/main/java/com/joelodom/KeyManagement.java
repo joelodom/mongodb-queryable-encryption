@@ -48,17 +48,27 @@ public class KeyManagement {
         localProvider.put("key", DEMO_KEY);
         KMS_PROVIDER_CREDS.put("local", localProvider);
 
+        /**
+         * You can also configure this demonstration to use AWS KMS. To make
+         * it work you need to setup your AWS KMS as described at
+         * https://www.mongodb.com/docs/manual/core/csfle/tutorials/aws/aws-automatic/
+         * (You may notice that link is for CSFLE, but the key provider prinicples
+         * are the same.)
+         * 
+         * Once you have your AWS KMS set up, you'll update your .env file with
+         * the parameters described in the link above and in env_template.
+         * 
+         * There are some additional resources at
+         * https://www.mongodb.com/docs/manual/core/queryable-encryption/qe-create-cmk/
+         * and advanced reading material at
+         * https://github.com/mongodb/specifications/blob/master/source/auth/auth.md
+         * 
+         * One thing you'll notice is that this version of this demonstration
+         * uses a secrets-based access pattern for the AWS KMS. I need to
+         * show how to use a more modern and secure role-based access pattern.
+         * The fun never ends.
+         */
         
-        // !!!!!!
-        // https://www.mongodb.com/docs/manual/core/csfle/tutorials/aws/aws-automatic/#grant-permissions
-        // https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_common-scenarios_non-aws.html
-        // !!!!!!
-        
-        // https://www.mongodb.com/docs/manual/core/queryable-encryption/qe-create-cmk/
-        // https://jira.mongodb.org/browse/DRIVERS-2280
-        // https://github.com/mongodb/specifications/blob/master/source/auth/auth.md
-        // https://github.com/mongodb/mongo-c-driver/commit/3ed55ed9b01a22e8208f9f382c9a976645bdbe4a#diff-6611c8b7be663c2fc9c7942692d314e8464f9398d0275e7ce691905fd5eeeeb0R700
-
         Map<String, Object> awsProvider = new HashMap<>();
         awsProvider.put("accessKeyId", Env.AWS_KMS_ACCESS_KEY_ID);
         awsProvider.put("secretAccessKey", Env.AWS_KMS_ACCESS_KEY_SECRET);

@@ -154,6 +154,11 @@ I'm not going to document all of the secret commands here, but take a peek at
 `QEDemonstration.java` and you'll find some secret commands that you can
 reverse engineer as I'll not document everything here.
 
+### Using a cloud KMS
+
+One of the (maybe not-so-secret) secrets of this demonstration is that it can
+be connfigured to use AWS KMS. See KeyManagement.java for more about that.
+
 ### Building a fat JAR file that includes the automatic encryption shared library
 
 I've included a build task called `fatJar` to create a JAR file that includes

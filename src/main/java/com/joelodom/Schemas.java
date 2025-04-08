@@ -62,7 +62,12 @@ public class Schemas {
     public static final BsonBinary ssnKey, ageKey;
 
     static {
-        /** TODO COMMENT
+        /**
+         * One of the features of this demonstration is that it can be configured
+         * to use AWS KMS. The awsKey document below describes the AWS key and
+         * is only used if the provider is configured to be AWS KMS.
+         * 
+         * See KeyManagement.java for more details.
         */
 
         BsonDocument awsKey = new BsonDocument();
