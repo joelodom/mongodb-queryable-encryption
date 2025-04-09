@@ -28,6 +28,9 @@ public class Env {
     public static final String AWS_KMS_KEY_REGION;
     public static final String AWS_KMS_ACCESS_KEY_ID;
     public static final String AWS_KMS_ACCESS_KEY_SECRET;
+    public static final String AWS_KMS_SESSION_TOKEN;
+
+    public static final boolean USE_AWS_ASSUME_ROLE;
 
     static {
         Dotenv dotenv = Dotenv.load();
@@ -43,10 +46,7 @@ public class Env {
         KEY_VAULT_COLLECTION = dotenv.get("KEY_VAULT_COLLECTION");
         KEY_VAULT_NAMESPACE = KEY_VAULT_DATABASE + "." + KEY_VAULT_COLLECTION;
 
-        String voidWarranty = dotenv.get("VOID_WARRANTY");
-        if (voidWarranty != null) {
-            VOID_WARRANTY = voidWarranty.equals("true");
-        }
+        VOID_WARRANTY = "true".equals(dotenv.get("VOID_WARRANTY"));
 
         KEY_PROVIDER = dotenv.get("KEY_PROVIDER");
 
@@ -54,5 +54,8 @@ public class Env {
         AWS_KMS_KEY_REGION = dotenv.get("AWS_KMS_KEY_REGION");
         AWS_KMS_ACCESS_KEY_ID = dotenv.get("AWS_KMS_ACCESS_KEY_ID");
         AWS_KMS_ACCESS_KEY_SECRET = dotenv.get("AWS_KMS_ACCESS_KEY_SECRET");
+        AWS_KMS_SESSION_TOKEN = dotenv.get("AWS_KMS_SESSION_TOKEN");
+
+        USE_AWS_ASSUME_ROLE = "true".equals(dotenv.get("USE_AWS_ASSUME_ROLE"));
     }
 }

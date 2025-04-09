@@ -46,9 +46,17 @@ KEY_VAULT_COLLECTION="__keyVault"
 # future version.
 #
 
-KEY_PROVIDER="local"  # change to "aws" to use AWS KMS
+# change to "aws" to use AWS KMS
+KEY_PROVIDER="local"
 
 AWS_KMS_KEY_ARN=""
 AWS_KMS_KEY_REGION=""
+
 AWS_KMS_ACCESS_KEY_ID=""
 AWS_KMS_ACCESS_KEY_SECRET=""
+
+# better than secrets (see KeyManagement.java)
+USE_AWS_ASSUME_ROLE="false"
+
+# only used for assume role
+AWS_KMS_SESSION_TOKEN=""

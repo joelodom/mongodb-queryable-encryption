@@ -14,6 +14,7 @@ import java.util.Map;
  * 
  * ENHANCEMENTS:
  * 
+ *   On-demand callback for AWS credentials (https://jira.mongodb.org/browse/DRIVERS-2011)
  *   Demonstrate key rotation
  *   Demonstrate multiple providers (including cloud providers)
  *   Demonstrate changing providers
@@ -63,15 +64,67 @@ public class KeyManagement {
          * and advanced reading material at
          * https://github.com/mongodb/specifications/blob/master/source/auth/auth.md
          * 
-         * One thing you'll notice is that this version of this demonstration
-         * uses a secrets-based access pattern for the AWS KMS. I need to
-         * show how to use a more modern and secure role-based access pattern.
-         * The fun never ends.
+         * For posterity, my IAM user is named qe-demo-key-user and the policy
+         * enc-dec-with-key is attached to qe-demo-key-user. The policy itself
+         * looks like the following.
+         * 
+                {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "VisualEditor0",
+                            "Effect": "Allow",
+                            "Action": [
+                                "kms:Decrypt",
+                                "kms:Encrypt"
+                            ],
+                            "Resource": "arn:aws:kms:us-east-1:700633163637:key/1a9eeae0-8de1-4771-93c3-72d5d5feffa3"
+                        }
+                    ]
+                }
+         *     
+         * ASSUMING AN AWS ROLE INSTEAD OF USING A LONG-LIVED SECRET
+         * 
+         * You'll notice that in the documentation at
+         * https://www.mongodb.com/docs/manual/core/csfle/tutorials/aws/aws-automatic/#configure-the-mongoclient
+         * you're advised to use an AWS IAM role to authenticate to your KMS.
+         * To put that differently, you'll still use an IAM user, but instead
+         * of giving that user long-term permissions to use the KMS, you'll
+         * allow that user to assume an AWS IAM role temporarily. This avoids
+         * long-term secret management and makes access control more robust.
+         * 
+         * Here is how I configured that.
+         * 
+         *   1. I removed the enc-dec-with-key policy for qe-demo-user
+         *      (see above). The user can no longer use the key directly.
+         * 
+         *   2. I created a role called qe-demo-role and attached the policy
+         *      use-qe-demo-key. It's the same as the policy seen above but
+         *      is now attached to the role and not the user.
+         * 
+         * Next, I used aws configure --profile qe-demo-user on my Mac to
+         * set up that user. I used the same credentials as above. Then I used
+         * aws sts assume-role --role-arn arn:aws:iam::700633163637:role/qe-demo-role --role-session-name QESession --profile qe-demo-user
+         * to get the short-term credentials to assume the role.
+         * 
+         * You may export those short-term credentials as follows:
+         * 
+                export AWS_ACCESS_KEY_ID="..."
+                export AWS_SECRET_ACCESS_KEY="..."
+                export AWS_SESSION_TOKEN="..."
+         *
+         * and set the awsProvider map below to an empty HashMap, you may do
+         * what I've done, which is to add the session token to the key
+         * provider (see env-template). If you take this approach, you'll have
+         * to manage AWS sessions in your application.
          */
-        
+
         Map<String, Object> awsProvider = new HashMap<>();
         awsProvider.put("accessKeyId", Env.AWS_KMS_ACCESS_KEY_ID);
         awsProvider.put("secretAccessKey", Env.AWS_KMS_ACCESS_KEY_SECRET);
+        if (Env.USE_AWS_ASSUME_ROLE) {
+            awsProvider.put("sessionToken", Env.AWS_KMS_SESSION_TOKEN);
+        }
         KMS_PROVIDER_CREDS.put("aws", awsProvider);
     }
 }
