@@ -162,6 +162,13 @@ public class KeyManagement {
      * access the actual CMK.
      * 
      * If you do need to rewrap your keys in the new CMK, it's easy. See below.
+     * 
+     * This is how you change key providers, by the way. To demonstrated that
+     * in this program, try setting up with "aws" or "local" as your KEY_PROVIDER
+     * in .env, then, while both are still available, exit the program, change
+     * to the other provider in your .env, then rewrap the keys. If you blow
+     * away the former provider credentials, it'll still work because the data
+     * keys have been rewrapped with the new provider.
      */
 
     public static void rewrapDataKeys() {
@@ -185,12 +192,15 @@ public class KeyManagement {
          */
 
         RewrapManyDataKeyOptions options = new RewrapManyDataKeyOptions()
-            .provider(Env.KEY_PROVIDER)
-            .masterKey(new BsonDocument()
-                .append("region", new BsonString(Env.AWS_KMS_KEY_REGION))
-                .append("key", new BsonString(Env.AWS_KMS_KEY_ARN)
-            )
-        );
+                .provider(Env.KEY_PROVIDER)
+;
+        if ("aws".equals(Env.KEY_PROVIDER)) {
+                options.masterKey(new BsonDocument()
+                    .append("region", new BsonString(Env.AWS_KMS_KEY_REGION))
+                    .append("key", new BsonString(Env.AWS_KMS_KEY_ARN)
+                )
+            );
+        }
 
         DatabaseManagement.CLIENT_ENCRYPTION.rewrapManyDataKey(
             new BsonDocument(), options);
