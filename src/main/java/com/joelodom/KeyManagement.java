@@ -20,9 +20,6 @@ import com.mongodb.client.model.vault.RewrapManyDataKeyOptions;
  * ENHANCEMENTS:
  * 
  *   On-demand callback for AWS credentials (https://jira.mongodb.org/browse/DRIVERS-2011)
- *   Demonstrate key rotation
- *   Demonstrate multiple providers (including cloud providers)
- *   Demonstrate changing providers
  *   Demonstrate key refresh interval change
  *
  */
@@ -48,6 +45,16 @@ public class KeyManagement {
     
     public static final Map<String, Map<String, Object>> KMS_PROVIDER_CREDS
             = new HashMap<>();
+    
+    /**
+     * This is a second local provider, not used in the normal demo flow. See
+     * changeKeySameProvider.
+     */
+
+    private static final String SECRET_PROVIDER = "local:secret_provider";
+    private static final byte[] SECRET_DEMO_KEY
+        = "AAAAAAAAAA01234567890123456789012345678901234567890123456789012345678901234567890123456789012345"
+            .getBytes();
 
     static { // initialize on startup
         Map<String, Object> localProvider = new HashMap<>();
@@ -131,6 +138,14 @@ public class KeyManagement {
             awsProvider.put("sessionToken", Env.AWS_KMS_SESSION_TOKEN);
         }
         KMS_PROVIDER_CREDS.put("aws", awsProvider);
+
+        /**
+         * See comment above and changeKeySameProvider for what this is about.
+         */
+
+        Map<String, Object> secretLocalProvider = new HashMap<>();
+        secretLocalProvider.put("key", SECRET_DEMO_KEY);
+        KMS_PROVIDER_CREDS.put(SECRET_PROVIDER, secretLocalProvider);
     }
 
     /**
@@ -202,6 +217,33 @@ public class KeyManagement {
             );
         }
 
+        DatabaseManagement.CLIENT_ENCRYPTION.rewrapManyDataKey(
+            new BsonDocument(), options);
+    }
+
+    /**
+     * If you want to change from one key in the same provider to another
+     * key in the same provider, you can do that. The trick is to name your
+     * key provider after the pattern "local:key_one" or "aws:key_one" where
+     * key_one is whatever name you want to give it. Then you can use the
+     * rewrap feature (above) to rewrap.
+     * 
+     * See
+     * 
+     * https://jira.mongodb.org/browse/DRIVERS-2731
+     * https://jira.mongodb.org/browse/JAVA-5275
+     * 
+     * The function below tests / demonstrates this.
+     */
+
+    public static void changeKeySameProvider() {
+        /**
+         * Add a new local example key using provider then rewrap with the new
+         * key.
+         */
+
+        RewrapManyDataKeyOptions options = new RewrapManyDataKeyOptions()
+            .provider(SECRET_PROVIDER);
         DatabaseManagement.CLIENT_ENCRYPTION.rewrapManyDataKey(
             new BsonDocument(), options);
     }

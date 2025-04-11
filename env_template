@@ -46,7 +46,7 @@ KEY_VAULT_COLLECTION="__keyVault"
 # future version.
 #
 
-# change to "aws" to use AWS KMS
+# change to "aws" to use AWS KMS and see KeyManagement.java for more protips
 KEY_PROVIDER="local"
 
 AWS_KMS_KEY_ARN=""
