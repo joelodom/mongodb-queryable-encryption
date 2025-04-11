@@ -3,6 +3,11 @@ package com.joelodom;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bson.BsonDocument;
+import org.bson.BsonString;
+
+import com.mongodb.client.model.vault.RewrapManyDataKeyOptions;
+
 /**
  *
  * MongoDB Queryable Encryption supports different key providers, including AWS
@@ -113,7 +118,7 @@ public class KeyManagement {
                 export AWS_SECRET_ACCESS_KEY="..."
                 export AWS_SESSION_TOKEN="..."
          *
-         * and set the awsProvider map below to an empty HashMap, you may do
+         * and set the awsProvider map below to an empty HashMap, or you may do
          * what I've done, which is to add the session token to the key
          * provider (see env-template). If you take this approach, you'll have
          * to manage AWS sessions in your application.
@@ -126,5 +131,68 @@ public class KeyManagement {
             awsProvider.put("sessionToken", Env.AWS_KMS_SESSION_TOKEN);
         }
         KMS_PROVIDER_CREDS.put("aws", awsProvider);
+    }
+
+    /**
+     * To understand key rotation, you have to understand how Queryable
+     * Encryption wraps keys. At the root level of the key hierarchy, there
+     * is the customer master key (CMK). This is used to encrypt one data
+     * encryption key (DEK) per field. When you rotate your CMK, new DEKs
+     * are encrypted with the old DEK. See
+     * https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/manage-keys/
+     * 
+     * So rotating your CMK doesn't re-encrypt existing DEKs. You can show this
+     * by creating a colletion with this demonstration and looking at your
+     * key vault (see env_template for the default location). You'll see one
+     * key per encrypted field in there. If you rotate your AWS key, the wrapped
+     * key won't change.
+     * 
+     * If you're wondering how your client can use the old keys if they haven't
+     * been re-encrypted (rewrapped), it's because "AWS KMS saves all previous
+     * versions of the cryptographic material in perpetuity so you can decrypt
+     * any data encrypted with that KMS key." Key rotation in this context is
+     * not so much about destroying old keys as it is about key wearout.
+     * 
+     * (https://docs.aws.amazon.com/kms/latest/developerguide/rotate-keys.html)
+     * 
+     * Remember that the CMK is only used to encrypt and decrypt the individual
+     * data keys. The client only needs Encrypt and Decrypt permission on the
+     * key in the KMS because it sends the encrypted / decrypted keys to the
+     * KMS for decrypting / encrypting. The client should never be able to
+     * access the actual CMK.
+     * 
+     * If you do need to rewrap your keys in the new CMK, it's easy. See below.
+     */
+
+    public static void rewrapDataKeys() {
+        /** See
+         * 
+         * https://www.mongodb.com/docs/manual/reference/method/KeyVault.rewrapManyDataKey
+         * and
+         * https://mongodb.github.io/mongo-java-driver/4.9/apidocs/mongodb-driver-core/com/mongodb/client/model/vault/RewrapManyDataKeyOptions.html
+         * 
+         * for the reference material on this API, which says:
+         * 
+         * """
+         * If the kmsProvider is "aws" the master key is required and must
+         * contain the following fields:
+         *   region: a String containing the AWS region in which to locate the master key
+         *   key: a String containing the Amazon Resource Name (ARN) to the AWS customer master key
+         * """
+         * 
+         * If you rewrap keys, you'll see their original creation date stays
+         * the same in the key vault, but their updated date changes.
+         */
+
+        RewrapManyDataKeyOptions options = new RewrapManyDataKeyOptions()
+            .provider(Env.KEY_PROVIDER)
+            .masterKey(new BsonDocument()
+                .append("region", new BsonString(Env.AWS_KMS_KEY_REGION))
+                .append("key", new BsonString(Env.AWS_KMS_KEY_ARN)
+            )
+        );
+
+        DatabaseManagement.CLIENT_ENCRYPTION.rewrapManyDataKey(
+            new BsonDocument(), options);
     }
 }

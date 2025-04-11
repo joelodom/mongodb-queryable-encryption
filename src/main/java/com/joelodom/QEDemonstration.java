@@ -101,6 +101,7 @@ public class QEDemonstration {
                 }
             }
             case "encrypt-subdocument" -> EncryptSubdocument.encryptSubdocument();
+            case "rewrap-keys" -> KeyManagement.rewrapDataKeys();
 
             default -> {
                 System.out.println(input + " is not a recognized command. Try help.");
