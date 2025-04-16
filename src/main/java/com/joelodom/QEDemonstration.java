@@ -23,6 +23,13 @@ public class QEDemonstration {
         maybeUnpackSharedLib();
 
         /**
+         * The only thing this call does is to make sure that DatabaseManagement
+         * static members are initialized before anything that uses them. There
+         * may be a better way to do this kind of thing.
+         */
+        DatabaseManagement.getDatabase();
+
+        /**
          * This is a cheap REPL implementation. It'll do for now.
          */
         try (  // to clean up the resources
