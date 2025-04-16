@@ -28,21 +28,21 @@ public class Schemas {
             {
             "fields": [
                 {
-                "keyId": <key id (null will create a key for you)>,
-                "path": "ssn",
-                "bsonType": "string",
-                "queries": {
-                    "queryType": "equality"
+                    "keyId": <key id (null will create a key for you)>,
+                    "path": "ssn",
+                    "bsonType": "string",
+                    "queries": {
+                        "queryType": "equality"
                 }
                 },
                 {
-                "keyId": <key id (null will create a key for you)>,
-                "path": "age",
-                "bsonType": "int",
-                "queries": {
-                    "queryType": "range",
-                    "max": 150,
-                    "min": 0
+                    "keyId": <key id (null will create a key for you)>,
+                    "path": "age",
+                    "bsonType": "int",
+                    "queries": {
+                        "queryType": "range",
+                        "max": 150,
+                        "min": 0
                 }
                 }
             ]
