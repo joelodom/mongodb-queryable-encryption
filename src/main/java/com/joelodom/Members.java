@@ -107,6 +107,7 @@ public class Members {
         BsonDocument filter = new BsonDocument(
                 "ssn", new BsonString(ssn)
         );
+        //findSpeedTest(filter);
         printFindResults(find(filter));
     }
 
@@ -131,4 +132,16 @@ public class Members {
                 .append("ssn", new BsonString(ssn));
         printFindResults(find(query));
     }
+
+    // public static void findSpeedTest(BsonDocument filter) {
+    //     MongoCollection<Document> collection
+    //             = DatabaseManagement.getEncryptedCollection();
+    //     Instant start = Instant.now();
+    //     FindIterable<Document> it = collection.find(filter);
+    //     for (Document doc : it) {
+    //         assert("-".equals(doc.get("ssn", String.class).charAt(3)));
+    //     }
+    //     System.out.println("Find and iterate time: " + Duration.between(
+    //         start, Instant.now()).toMillis() + " ms");
+    // }
 }
