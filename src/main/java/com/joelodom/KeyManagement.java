@@ -19,8 +19,8 @@ import com.mongodb.client.model.vault.RewrapManyDataKeyOptions;
  * 
  * ENHANCEMENTS:
  * 
+ *   Demonstrate key refresh interval change (https://jira.mongodb.org/browse/JAVA-5547)
  *   On-demand callback for AWS credentials (https://jira.mongodb.org/browse/DRIVERS-2011)
- *   Demonstrate key refresh interval change
  *
  */
 
