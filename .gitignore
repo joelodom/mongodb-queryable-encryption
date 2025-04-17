@@ -29,3 +29,4 @@ replay_pid*
 build/
 lib/
 *.dylib
+.vscode/

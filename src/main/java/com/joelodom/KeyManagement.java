@@ -28,8 +28,7 @@ public class KeyManagement {
 
     /**
      * The key should be 96 bytes. It's hardcoded here because this is just a
-     * demonstration. For an example that uses a key vault, see
-     * https://www.mongodb.com/docs/manual/core/queryable-encryption/qe-create-cmk/.
+     * demonstration. See below for use of AWS KMS.
      */
 
     private static final byte[] DEMO_KEY
