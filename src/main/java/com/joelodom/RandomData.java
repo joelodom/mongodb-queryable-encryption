@@ -21,6 +21,10 @@ public class RandomData {
     public final static double AGE_MEAN = 50.0;
     public final static double AGE_STD_DEV = 18.0;
 
+    public static final double MIN_BALANCE = -10000.0;
+    public static final double MAX_BALANCE = 10000.0;
+    public static final double BALANCE_PRECISION = 0; // digits after the decimal point
+
     private final static List<String> NAMES = List.of(
             "Alice",
             "Bob",
@@ -148,6 +152,7 @@ public class RandomData {
                 RandomData.generateRandomFullName())
                 .append("ssn", RandomData.generateRandomSSN())
                 .append("age", RandomData.generateRandomAge())
+                //.append("balance", MIN_BALANCE + Math.random() * (MAX_BALANCE - MIN_BALANCE))
                 .append("zipCode", RandomData.generateRandomZipCode());
     }
 }

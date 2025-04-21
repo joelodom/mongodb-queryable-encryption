@@ -5,6 +5,7 @@ import java.util.Arrays;
 import org.bson.BsonArray;
 import org.bson.BsonBinary;
 import org.bson.BsonDocument;
+import org.bson.BsonDouble;
 import org.bson.BsonInt32;
 import org.bson.BsonString;
 
@@ -25,28 +26,54 @@ public class Schemas {
      *
      * This schema map looks like this in JSON:
 
+        {
+        "fields": [
             {
-            "fields": [
-                {
-                    "keyId": <key id (null will create a key for you)>,
-                    "path": "ssn",
-                    "bsonType": "string",
-                    "queries": {
-                        "queryType": "equality"
+            "keyId": {
+                "$binary": {
+                "base64": "L8PkFV9NRDqplyCYBRJwSQ==",
+                "subType": "04"
                 }
-                },
-                {
-                    "keyId": <key id (null will create a key for you)>,
-                    "path": "age",
-                    "bsonType": "int",
-                    "queries": {
-                        "queryType": "range",
-                        "max": 150,
-                        "min": 0
-                }
-                }
-            ]
+            },
+            "path": "ssn",
+            "bsonType": "string",
+            "queries": {
+                "queryType": "equality"
             }
+            },
+            {
+            "keyId": {
+                "$binary": {
+                "base64": "xFjGKy8aSOuynKuIp8D8VQ==",
+                "subType": "04"
+                }
+            },
+            "path": "age",
+            "bsonType": "int",
+            "queries": {
+                "queryType": "range",
+                "max": 150,
+                "min": 0
+            }
+            },
+            {
+            "keyId": {
+                "$binary": {
+                "base64": "/Sy2cShSSmiVzk53BTJk1Q==",
+                "subType": "04"
+                }
+            },
+            "path": "balance",
+            "bsonType": "double",
+            "queries": {
+                "queryType": "range",
+                "max": 100000.0,
+                "min": -100000.0,
+                "precision": 6.0
+            }
+            }
+        ]
+        }
 
      *
      */
@@ -59,7 +86,7 @@ public class Schemas {
      * schema maps for encryption. See the README and the comments below.
      */
 
-    public static final BsonBinary ssnKey, ageKey;
+    public static final BsonBinary ssnKey, ageKey, balanceKey;
 
     static {
         /**
@@ -84,11 +111,14 @@ public class Schemas {
 
         final String SSN_KEY = "ssnKey";
         final String AGE_KEY = "ageKey";
+        final String BALANCE_KEY = "balanceKey";
 
         BsonDocument ssnKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
             .getKeyByAltName(SSN_KEY);
         BsonDocument ageKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
             .getKeyByAltName(AGE_KEY);
+        BsonDocument balanceKeyDocument = DatabaseManagement.CLIENT_ENCRYPTION
+            .getKeyByAltName(BALANCE_KEY);
 
         if (ssnKeyDocument == null) {
             DataKeyOptions dataKeyOptions = new DataKeyOptions()
@@ -116,6 +146,19 @@ public class Schemas {
             ageKey = ageKeyDocument.getBinary("_id");
         }
 
+        if (balanceKeyDocument == null) {
+            DataKeyOptions dataKeyOptions = new DataKeyOptions()
+                .keyAltNames(Arrays.asList(BALANCE_KEY));
+            if ("aws".equals(Env.KEY_PROVIDER)) {
+                dataKeyOptions.masterKey(awsKey);
+            }
+            balanceKey = DatabaseManagement.CLIENT_ENCRYPTION.createDataKey(
+                Env.KEY_PROVIDER, dataKeyOptions);
+        }
+        else {
+            balanceKey = balanceKeyDocument.getBinary("_id");
+        }
+
         /**
          * Now after all that hassle, we have the KeyIds. Again, the easy way
          * to do this is to just pass BsonNull and we'd only need the map
@@ -138,6 +181,26 @@ public class Schemas {
                                         .append("queryType", new BsonString("range"))
                                         .append("max", new BsonInt32(RandomData.MAX_AGE))
                                         .append("min", new BsonInt32(0))
+                                ),
+                        /**
+                         * It's quite important to set min and max and precision
+                         * for floating-point types, otherwise the storage overhead
+                         * for QE becomes very large because it'll index the entire
+                         * space of the data type to its max precision. See
+                         * https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/encrypt-and-query/#configure-encrypted-fields-for-optimal-search-and-storage
+                         * 
+                         * Precision is in digits after the decimal point. See
+                         * https://github.com/mongodb/specifications/blob/43d2c7bacd62249de8d2173bf8ee39e6fd7a686e/source/client-side-encryption/client-side-encryption.md#encryptopts
+                         */
+                        new BsonDocument()
+                                .append("keyId", balanceKey)
+                                .append("path", new BsonString("balance"))
+                                .append("bsonType", new BsonString("double"))
+                                .append("queries", new BsonDocument()
+                                        .append("queryType", new BsonString("range"))
+                                        .append("max", new BsonDouble(RandomData.MAX_BALANCE))
+                                        .append("min", new BsonDouble(RandomData.MIN_BALANCE))
+                                        .append("precision", new BsonDouble(RandomData.BALANCE_PRECISION))
                                 )
                 )));
     }
