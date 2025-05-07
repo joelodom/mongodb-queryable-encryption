@@ -13,10 +13,8 @@ import com.mongodb.client.result.InsertManyResult;
 
 /**
  * This is to demonstrate how $lookup and QE behave together.
- * Comments are inline.
- * 
- * TODO: Reference new documentation here and note THIS WILL NOT WORK
- * pre MongoDB 8.1 and Java driver 5.4.0. You'll also need crypt-shared 8.1+.
+ * Comments are inline. Before Server 8.1 and crypt_shared 8.1 this will not
+ * work. It also requires the Java driver 5.4+.
  */
 
 public final class LookupDemonstration {
@@ -42,7 +40,7 @@ public final class LookupDemonstration {
          * locations.
          */
 
-        System.out.println("Creating the locations colletion...");
+        System.out.println("Creating the locations collection...");
 
         // Create the collection
         MongoDatabase db = DatabaseManagement.getDatabase();
