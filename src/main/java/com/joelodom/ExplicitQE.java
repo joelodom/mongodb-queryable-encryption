@@ -2,6 +2,7 @@ package com.joelodom;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.bson.BsonBinary;
 import org.bson.BsonInt32;
@@ -74,6 +75,7 @@ public class ExplicitQE {
             .autoEncryptionSettings(AutoEncryptionSettings.builder()
                 .keyVaultNamespace(Env.KEY_VAULT_NAMESPACE)
                 .kmsProviders(KeyManagement.KMS_PROVIDER_CREDS)
+                .keyExpiration(60L, TimeUnit.SECONDS) // optional, defaults to 60 seconds, 0 means never
                 .bypassQueryAnalysis(true).build())
         .build();
 
