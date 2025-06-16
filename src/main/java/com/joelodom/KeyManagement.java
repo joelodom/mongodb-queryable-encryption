@@ -151,8 +151,10 @@ public class KeyManagement {
      * Encryption wraps keys. At the root level of the key hierarchy, there
      * is the customer master key (CMK). This is used to encrypt one data
      * encryption key (DEK) per field. When you rotate your CMK, new DEKs
-     * are encrypted with the old DEK. See
+     * are encrypted with the new CMK. See
      * https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/manage-keys/
+     * and
+     * https://www.mongodb.com/docs/manual/core/queryable-encryption/fundamentals/keys-key-vaults/#key-rotation
      * 
      * So rotating your CMK doesn't re-encrypt existing DEKs. You can show this
      * by creating a colletion with this demonstration and looking at your
