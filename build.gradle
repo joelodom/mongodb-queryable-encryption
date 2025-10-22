@@ -14,7 +14,8 @@ dependencies {
 }
 
 application {
-    mainClass = 'com.joelodom.QEDemonstration'
+    //mainClass = 'com.joelodom.QEDemonstration'
+    mainClass = 'com.joelodom.ReallyQuickStart'
 }
 
 run {

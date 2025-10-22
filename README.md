@@ -3,41 +3,57 @@ A demonstration and pattern library for MongoDB Queryable Encryption.
 
 ## The Magic of Queryable Encryption
 
-If you’ve ever worked with sensitive data — credit cards, medical records, personal identifiers — you’ve probably had that uneasy feeling: *“We really shouldn’t expose this stuff in the database, but we need to query it.”*
+If you’ve ever worked with sensitive data — credit cards, medical records,
+personal identifiers — you’ve probably had that uneasy feeling: *“We really
+shouldn’t expose this stuff in the database, but we need to query it.”*
 
-Welcome to one of the classic tradeoffs in database security. On one hand, we want to **protect data** so thoroughly that even our database admins can't peek at it. On the other, we  need to **run queries**. Historically, you could pick one, but not both.
+Welcome to one of the classic tradeoffs in database security. On one hand, we
+want to **protect data** so thoroughly that even our database admins can't peek
+at it. On the other, we  need to **run queries**. Historically, you could pick
+one, but not both.
 
 That’s where **MongoDB Queryable Encryption (QE)** changes the game.
 
-Queryable Encryption lets you **run queries on encrypted fields** — think of searching for a customer by email or filtering transactions by date — while the database itself remains blissfully ignorant of what any of that data actually is. The encryption happens on the client side, using strong cryptographic techniques, so MongoDB only ever stores and processes ciphertext.
+Queryable Encryption lets you **run queries on encrypted fields** — think of
+searching for a customer by email or filtering transactions by date — while the
+database itself remains blissfully ignorant of what any of that data actually is.
+The encryption happens on the client side, using strong cryptographic techniques,
+so MongoDB only ever stores and processes ciphertext.
 
 To put it simply:
 
 * Your app can query encrypted data.
 * MongoDB can process those queries.
-* But **MongoDB can’t read the data**. Nor can your DBA's (unless you give them the keys), nor can
-  the cloud service provider that runs your infrastructure, nor can *anyone* who doesn't have the keys.
+* But **MongoDB can’t read the data**. Nor can your DBA's (unless you give them
+  the keys), nor can the cloud service provider that runs your infrastructure, nor
+  can *anyone* who doesn't have the keys.
 
 It’s the best of both worlds — security *and* usability.
 
-In older systems, achieving this kind of privacy meant building awkward workarounds: decrypting data in memory, relying on partially trusted middle tiers, or accepting limited query capabilities. Queryable Encryption removes those compromises. You write queries just like you always have — `find`, `update`, `aggregate` — and MongoDB handles the rest under the hood, securely.
+In older systems, achieving this kind of privacy meant building awkward
+workarounds: decrypting data in database memory, relying on partially trusted middle
+tiers, or accepting limited query capabilities. Queryable Encryption removes
+those compromises. You write queries just like you always have — `find`,
+`update`, `aggregate` — and MongoDB handles the rest under the hood, securely.
 
-The result? A world where sensitive data stays encrypted at rest, in transit, *and even during use*. That’s a huge leap forward for data privacy and compliance. It means your database can still be powerful and fast — but you’re no longer forced to trade that power for exposure.
+The result? A world where sensitive data stays encrypted at rest, in transit,
+*and even during use*. That’s a huge leap forward for data privacy and
+compliance. It means your database can still be powerful and fast — but you’re
+no longer forced to trade that power for exposure.
 
-With Queryable Encryption, trust isn’t something you have to give to your database.
-It’s something you can *cryptographically enforce*. That's worth a thought.
-All of the algorithms, the code, the cryptography papers — all of these are
-publicly available. You don't have to trust a hardware vendor, a database vendor,
-or a cloud vendor. You only have to trust the math.
+With Queryable Encryption, trust isn’t something you have to give to your
+database. It’s something you can *cryptographically enforce*. That's worth a
+thought. All of the algorithms, the code, the cryptography papers — all of these
+are publicly available. You don't have to trust a hardware vendor, a database
+vendor, or a cloud vendor. You only have to trust the math.
 
 ## Getting started
 
 ### Installing MongoDB
 
-For this to work, you'll need MongoDB 8.0 or later. QE will work with MongoDB 7,
-but you'll be limited to equality queries only, and this application uses range
-queries as well as equality queries . I'm going to use my Atlas
-instance, but you could also point to a local instance.
+For this to work, you'll need MongoDB 8.2 or later. QE will work with earlier
+versions of MongoDB, but query types will be limited. I'm going to use my Atlas
+MongoDB instance, but you could also point to a local instance.
 See https://www.mongodb.com/docs/manual/installation/ and
 https://www.mongodb.com/docs/atlas/getting-started/.
 
@@ -51,7 +67,7 @@ I have added both of these to the included gradle file.
 
 #### Installing the MongoDB crypt_shared library
 
-To perform automatic encryption (not available in our Community Edition),
+To perform automatic encryption (not available in Community Edition),
 you'll need the query analysis library, crypt_shared. See
 https://www.mongodb.com/docs/manual/core/queryable-encryption/install-library/.
 This library doesn't actually do any encryption, rather it does the parsing
@@ -59,6 +75,11 @@ and query analysis required for automatic encryption.
 
 If you use this on MacOS and it's blocked by your security policy, try
 `xattr -d com.apple.quarantine ./mongo_crypt_v1.dylib`.
+
+### A quickstart project
+
+One file in this project stands apart from the others: `ReallyQuickStart.java`.
+To run it, change `build.gradle` to use `mainClass = 'com.joelodom.ReallyQuickStart'`.
 
 ### Configuring your environment
 
@@ -79,9 +100,11 @@ https://docs.gradle.org/current/userguide/installation.html.
 
 ## Building and running the project
 
-I have provided the gradle wrapper for this project. To run it from the command
-line type `./gradlew --console plain run`. I've also commited my .vscode folder
-for those using VS Code, so Command + Shift + B works for me on my Mac.
+I have provided a build.gradle wrapper for this project, but you'll need to
+create the wrapper with `gradle wrapper`. After you create the wrapper, you
+can run the project with `./gradlew --console plain run`. I've also commited my
+.vscode folder for those using VS Code, so Command + Shift + B works for me on
+my Mac.
 
 ## What to do when it runs
 
