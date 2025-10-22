@@ -1,8 +1,36 @@
 # mongodb-queryable-encryption
-A demonstration and sandbox for MongoDB Queryable Encryption. This is a work
-in progress, so take it all with a grain.
+A demonstration and pattern library for MongoDB Queryable Encryption.
 
-## First things first
+## The Magic of Queryable Encryption
+
+If you’ve ever worked with sensitive data — credit cards, medical records, personal identifiers — you’ve probably had that uneasy feeling: *“We really shouldn’t expose this stuff in the database, but we need to query it.”*
+
+Welcome to one of the classic tradeoffs in database security. On one hand, we want to **protect data** so thoroughly that even our database admins can't peek at it. On the other, we  need to **run queries**. Historically, you could pick one, but not both.
+
+That’s where **MongoDB Queryable Encryption (QE)** changes the game.
+
+Queryable Encryption lets you **run queries on encrypted fields** — think of searching for a customer by email or filtering transactions by date — while the database itself remains blissfully ignorant of what any of that data actually is. The encryption happens on the client side, using strong cryptographic techniques, so MongoDB only ever stores and processes ciphertext.
+
+To put it simply:
+
+* Your app can query encrypted data.
+* MongoDB can process those queries.
+* But **MongoDB can’t read the data**. Nor can your DBA's (unless you give them the keys), nor can
+  the cloud service provider that runs your infrastructure, nor can *anyone* who doesn't have the keys.
+
+It’s the best of both worlds — security *and* usability.
+
+In older systems, achieving this kind of privacy meant building awkward workarounds: decrypting data in memory, relying on partially trusted middle tiers, or accepting limited query capabilities. Queryable Encryption removes those compromises. You write queries just like you always have — `find`, `update`, `aggregate` — and MongoDB handles the rest under the hood, securely.
+
+The result? A world where sensitive data stays encrypted at rest, in transit, *and even during use*. That’s a huge leap forward for data privacy and compliance. It means your database can still be powerful and fast — but you’re no longer forced to trade that power for exposure.
+
+With Queryable Encryption, trust isn’t something you have to give to your database.
+It’s something you can *cryptographically enforce*. That's worth a thought.
+All of the algorithms, the code, the cryptography papers — all of these are
+publicly available. You don't have to trust a hardware vendor, a database vendor,
+or a cloud vendor. You only have to trust the math.
+
+## Getting started
 
 ### Installing MongoDB
 
